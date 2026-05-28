@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JOKER FC — Proposal Interaktif</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Barlow Condensed"', 'sans-serif'],
+            body:    ['Inter', 'sans-serif'],
+          },
+          colors: {
+            gold: { 400: '#e5b84c', 500: '#d4a535', 600: '#b88a2a' },
+          },
+        },
+      },
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow: hidden; height: 100%; }
+
+    .frame-overlay {
+      position: fixed; inset: 10px; z-index: 200; pointer-events: none;
+      border: 1px solid rgba(37,99,235,0.10);
+      box-shadow: inset 0 0 0 2px rgba(37,99,235,0.04);
+    }
+    @media (max-width: 640px) { .frame-overlay { inset: 6px; } }
+
+    #cover {
+      position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center;
+      background: #ffffff;
+      transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), visibility 0.7s cubic-bezier(0.4,0,0.2,1);
+    }
+    #cover.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .cover-circle-lg {
+      position: absolute; top: -180px; right: -120px; width: 620px; height: 620px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(37,99,235,0.14) 0%, rgba(37,99,235,0.02) 70%, transparent 100%);
+    }
+    .cover-circle-sm {
+      position: absolute; bottom: -60px; left: -40px; width: 280px; height: 280px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,165,53,0.13) 0%, rgba(212,165,53,0.02) 70%, transparent 100%);
+    }
+    .cover-line-h  { position: absolute; top: 22%; left: 0; right: 0; height: 1px; background: rgba(37,99,235,0.08); }
+    .cover-line-v  { position: absolute; top: 0; bottom: 0; left: 18%; width: 1px; background: rgba(37,99,235,0.06); }
+    .cover-line-v2 { position: absolute; top: 0; bottom: 0; right: 22%; width: 1px; background: rgba(37,99,235,0.05); }
+    .cover-dots {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(37,99,235,0.08) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at 70% 30%, black 25%, transparent 65%);
+    }
+    @keyframes coverPulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.25); }
+      50%     { box-shadow: 0 0 0 16px rgba(37,99,235,0); }
+    }
+    .cover-pulse { animation: coverPulse 2.5s ease-in-out infinite; }
+
+    #snap-container {
+      height: 100vh; height: 100dvh; overflow-y: auto; overflow-x: hidden;
+      scroll-snap-type: y mandatory; scroll-behavior: smooth;
+      display: none;
+    }
+    #snap-container.active { display: block; }
+
+    .snap-section {
+      min-height: 100vh; min-height: 100dvh;
+      scroll-snap-align: start;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+
+    .h-pages {
+      display: flex; overflow-x: auto; overflow-y: hidden;
+      scroll-snap-type: x mandatory; scroll-behavior: smooth;
+      width: 100%; height: 100vh; height: 100dvh;
+    }
+    .h-pages::-webkit-scrollbar { display: none; }
+    .h-page {
+      flex: 0 0 100%; scroll-snap-align: start;
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem;
+    }
+
+    .h-nav {
+      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 20;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .h-nav button {
+      width: 40px; height: 40px; border-radius: 50%; background: white; border: 1px solid #e2e8f0;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      color: #475569; font-size: 1rem; transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .h-nav button:hover { border-color: #2563eb; color: #2563eb; }
+    .h-nav button:disabled { opacity: 0.3; cursor: default; }
+    .h-nav .h-indicator {
+      font-size: 0.75rem; color: #94a3b8; font-weight: 500; letter-spacing: 0.05em; white-space: nowrap;
+    }
+
+    #nav-dots {
+      position: fixed; right: 18px; top: 50%; transform: translateY(-50%); z-index: 150;
+      display: flex; flex-direction: column; gap: 10px; align-items: center;
+    }
+    #nav-dots .dot {
+      width: 10px; height: 10px; border-radius: 50%; cursor: pointer;
+      border: 2px solid #cbd5e1; background: transparent;
+      transition: all 0.3s ease;
+    }
+    #nav-dots .dot:hover { border-color: #2563eb; }
+    #nav-dots .dot.active { background: #2563eb; border-color: #2563eb; transform: scale(1.3); }
+
+    .section-arrows {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 20;
+      display: flex; gap: 24px;
+    }
+    .section-arrows button {
+      background: white; border: 1px solid #e2e8f0; border-radius: 50%;
+      width: 36px; height: 36px; cursor: pointer; color: #64748b;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .section-arrows button:hover { border-color: #2563eb; color: #2563eb; }
+    .section-arrows button:disabled { opacity: 0.25; cursor: default; pointer-events: none; }
+
+    #nav-dots, .section-arrows { opacity: 0; transition: opacity 0.5s 0.3s; }
+    #nav-dots.visible, .section-arrows.visible { opacity: 1; }
+
+    .card-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px -8px rgba(37,99,235,0.1);
+      border-color: rgba(37,99,235,0.25);
+    }
+
+    .katex { font-size: 1.1em !important; }
+    .katex-display { margin: 0.4em 0 !important; }
+    .stat-katex .katex { font-size: 1.8em !important; }
+
+    @media print {
+      .frame-overlay, #cover, #nav-dots, .section-arrows, .h-nav, .no-print { display: none !important; }
+      body { overflow: visible !important; height: auto !important; background: #fff !important; color: #1e293b !important; font-size: 12pt; }
+      #snap-container { display: block !important; height: auto !important; overflow: visible !important; scroll-snap-type: none !important; }
+      .snap-section { min-height: auto !important; display: block !important; padding: 2rem 1rem !important; page-break-inside: avoid; }
+      .h-pages { display: block !important; height: auto !important; overflow: visible !important; scroll-snap-type: none !important; }
+      .h-page { flex: none !important; display: block !important; padding: 1rem 0 !important; }
+      .bg-slate-50, .bg-slate-100 { background: #fff !important; }
+      img { max-width: 100% !important; }
+      a { color: #2563eb !important; }
+    }
+
+    @media (max-width: 640px) {
+      #nav-dots { right: 8px; gap: 8px; }
+      #nav-dots .dot { width: 8px; height: 8px; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-body">
+
+  <div class="frame-overlay"></div>
+
+  <div id="cover">
+    <div class="cover-circle-lg"></div>
+    <div class="cover-circle-sm"></div>
+    <div class="cover-line-h"></div>
+    <div class="cover-line-v"></div>
+    <div class="cover-line-v2"></div>
+    <div class="cover-dots"></div>
+
+    <div class="relative z-10 text-center px-6 max-w-3xl mx-auto">
+      <div class="mb-8 inline-flex items-center justify-center w-20 h-20 rounded-sm border-2 border-blue-200 bg-white">
+        <i class="fas fa-shield-haltered text-4xl text-blue-600"></i>
+      </div>
+      <h1 class="font-display text-[5.5rem] sm:text-[7rem] md:text-[8.5rem] font-black tracking-[0.01em] text-slate-900 uppercase leading-[0.85] mb-0">JOKER</h1>
+      <div class="flex items-center justify-center gap-3 mb-10 mt-1">
+        <span class="h-px w-10 bg-blue-400"></span>
+        <span class="font-display text-2xl sm:text-3xl font-semibold tracking-[0.25em] text-blue-600 uppercase">FC</span>
+        <span class="h-px w-10 bg-blue-400"></span>
+      </div>
+      <div class="inline-block bg-white border border-slate-200 rounded-sm px-8 py-5 mb-10 shadow-sm">
+        <p class="text-slate-400 text-xs tracking-[0.2em] uppercase mb-1">Kepada Yang Terhormat</p>
+        <p class="text-slate-800 font-semibold text-sm sm:text-base">Manajemen &amp; Divisi ComRel</p>
+        <p class="text-slate-800 font-semibold text-sm sm:text-base">PLTU Cirebon</p>
+      </div>
+      <button id="btn-open"
+              class="cover-pulse inline-flex items-center gap-3 px-10 py-4 rounded-sm
+                     bg-blue-600 hover:bg-blue-700 text-white font-display text-lg font-semibold
+                     tracking-wider uppercase transition-all duration-300
+                     hover:shadow-lg hover:shadow-blue-600/20 active:scale-95">
+        <i class="fas fa-arrow-right text-sm"></i>
+        Buka Profil Tim JOKER
+      </button>
+    </div>
+  </div>
+
+  <div id="snap-container">
+
+    <section class="snap-section bg-white overflow-hidden" data-index="0">
+      <div class="absolute inset-0">
+        <img src="https://images.unsplash.com/photo-1459865264687-595d652de67e?w=1600&q=80"
+             alt="" class="w-full h-full object-cover opacity-[0.06]"
+             onerror="this.style.display='none'">
+      </div>
+      <div class="absolute top-0 right-0 w-96 h-96 rounded-full bg-blue-600/5 -translate-y-1/2 translate-x-1/4"></div>
+      <div class="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-gold-500/5 translate-y-1/3 -translate-x-1/4"></div>
+
+      <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+        <p class="text-blue-600 font-display text-sm sm:text-base tracking-[0.3em] uppercase mb-5">Proposal Interaktif</p>
+        <h2 class="font-display text-5xl sm:text-6xl md:text-7xl font-black tracking-tight text-slate-900 uppercase leading-[0.92] mb-6">
+          Lebih Dari<br><span class="text-blue-600">Sekadar Sepak Bola</span>
+        </h2>
+        <p class="text-slate-500 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-10">
+          Inisiatif organik yang membuktikan bahwa olahraga mampu menyatukan,
+          membangun karakter, dan menciptakan dampak sosial nyata di PLTU Cirebon.
+        </p>
+        <div class="flex flex-wrap justify-center gap-8 sm:gap-12">
+          <div class="text-center"><span class="block font-display text-4xl sm:text-5xl font-bold text-gold-500">2+</span><span class="text-slate-400 text-xs uppercase tracking-wider mt-1 block">Tahun Berdiri</span></div>
+          <div class="text-center"><span class="block font-display text-4xl sm:text-5xl font-bold text-gold-500">30+</span><span class="text-slate-400 text-xs uppercase tracking-wider mt-1 block">Anggota Aktif</span></div>
+          <div class="text-center"><span class="block font-display text-4xl sm:text-5xl font-bold text-gold-500">15+</span><span class="text-slate-400 text-xs uppercase tracking-wider mt-1 block">Turnamen</span></div>
+        </div>
+      </div>
+      <div class="section-arrows">
+        <button disabled aria-label="Sebelumnya"><i class="fas fa-chevron-up text-sm"></i></button>
+        <button data-dir="down" aria-label="Berikutnya"><i class="fas fa-chevron-down text-sm"></i></button>
+      </div>
+    </section>
+
+    <section class="snap-section bg-slate-50" data-index="1">
+      <div class="max-w-6xl mx-auto w-full px-6">
+        <div class="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+          <div class="relative">
+            <div class="aspect-[4/3] rounded-sm overflow-hidden border border-slate-200 bg-white shadow-sm">
+              <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=800&q=80"
+                   alt="" class="w-full h-full object-cover"
+                   onerror="this.style.display='none'; this.parentElement.classList.add('bg-slate-100');">
+            </div>
+            <div class="absolute -bottom-3 -right-3 w-20 h-20 border-r-2 border-b-2 border-blue-400/40 rounded-br-sm"></div>
+          </div>
+          <div>
+            <p class="text-blue-600 font-display text-sm tracking-[0.2em] uppercase mb-3">Latar Belakang</p>
+            <h3 class="font-display text-4xl sm:text-5xl font-bold text-slate-900 uppercase leading-tight mb-6">
+              Dari Lapangan<br>Ke <span class="text-gold-500">Solidaritas</span>
+            </h3>
+            <div class="space-y-3 text-slate-600 leading-relaxed text-sm sm:text-base">
+              <p>Tim JOKER lahir dari inisiatif para pekerja kontrak — petugas kebersihan, office boy, dan tim operasional lapangan — di PLTU Cirebon. Berawal dari permainan santai selepas jam kerja, semangat kebersamaan ini tumbuh menjadi klub sepak bola yang disiplin dan kompetitif.</p>
+              <p>Nama <strong class="text-slate-900 font-semibold">"JOKER"</strong> melambangkan elemen kejutan: dari latar sederhana, lahir kekuatan kolektif yang patut diperhitungkan di Cirebon.</p>
+              <p>Kini, Tim JOKER adalah bukti nyata bahwa <strong class="text-blue-600 font-semibold">kesejahteraan pekerja</strong> dan <strong class="text-gold-500 font-semibold">dampak sosial</strong> dapat tumbuh dari lapangan rumput.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section-arrows">
+        <button data-dir="up" aria-label="Sebelumnya"><i class="fas fa-chevron-up text-sm"></i></button>
+        <button data-dir="down" aria-label="Berikutnya"><i class="fas fa-chevron-down text-sm"></i></button>
+      </div>
+    </section>
+
+    <section class="snap-section bg-white" data-index="2">
+      <div class="absolute inset-0 opacity-[0.02]"
+           style="background-image:repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(37,99,235,0.9) 28px,rgba(37,99,235,0.9) 29px),repeating-linear-gradient(-45deg,transparent,transparent 28px,rgba(212,165,53,0.7) 28px,rgba(212,165,53,0.7) 29px);">
+      </div>
+      <div class="relative max-w-3xl mx-auto w-full px-6 text-center">
+        <p class="text-blue-600 font-display text-sm tracking-[0.2em] uppercase mb-1">Komposisi Tim</p>
+        <h3 class="font-display text-3xl sm:text-4xl font-bold text-slate-900 uppercase mb-1">Kekuatan <span class="text-gold-500">Kami</span></h3>
+        <p class="text-slate-500 max-w-lg mx-auto text-xs mb-10">Dibangun oleh talenta lokal dan dedikasi pekerja — satu kesatuan yang solid.</p>
+
+        <div class="grid grid-cols-3 gap-6 sm:gap-4">
+          <div class="flex flex-col items-center">
+            <div class="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center mb-3 ring-2 ring-blue-100/50">
+              <i class="fas fa-users text-lg text-blue-600"></i>
+            </div>
+            <div id="katex-local" class="mb-0 stat-katex"></div>
+            <p class="font-display text-sm font-bold text-slate-900 uppercase tracking-wider">Pemuda Lokal</p>
+            <p class="text-slate-400 text-[0.65rem] mt-0.5">Talenta Cirebon</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="w-14 h-14 rounded-full bg-amber-50 flex items-center justify-center mb-3 ring-2 ring-amber-100/50">
+              <i class="fas fa-hard-hat text-lg text-gold-500"></i>
+            </div>
+            <div id="katex-worker" class="mb-0 stat-katex"></div>
+            <p class="font-display text-sm font-bold text-slate-900 uppercase tracking-wider">Pekerja PLTU</p>
+            <p class="text-slate-400 text-[0.65rem] mt-0.5">Berbasis pembangkit</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center mb-3 ring-2 ring-emerald-100/50">
+              <i class="fas fa-futbol text-lg text-emerald-500"></i>
+            </div>
+            <span class="font-display text-3xl sm:text-4xl font-black text-gold-500 leading-none">30<span class="text-slate-400">+</span></span>
+            <p class="font-display text-sm font-bold text-slate-900 uppercase tracking-wider mt-1">Personil Aktif</p>
+            <p class="text-slate-400 text-[0.65rem] mt-0.5">Solidaritas lintas divisi</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-arrows">
+        <button data-dir="up" aria-label="Sebelumnya"><i class="fas fa-chevron-up text-sm"></i></button>
+        <button data-dir="down" aria-label="Berikutnya"><i class="fas fa-chevron-down text-sm"></i></button>
+      </div>
+    </section>
+
+    <section class="snap-section bg-slate-50" data-index="3">
+      <div class="max-w-4xl mx-auto w-full px-6">
+        <div class="text-center mb-8">
+          <p class="text-blue-600 font-display text-sm tracking-[0.2em] uppercase mb-2">Nilai Strategis</p>
+          <h3 class="font-display text-3xl sm:text-4xl font-bold text-slate-900 uppercase mb-2">Lebih Dari <span class="text-gold-500">Permainan</span></h3>
+          <p class="text-slate-500 max-w-lg mx-auto text-xs">Aset strategis bagi Social License to Operate dan pengembangan komunitas berkelanjutan.</p>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-4">
+          <div class="card-hover bg-white border border-slate-200 rounded-sm p-5 text-center shadow-sm">
+            <div class="inline-flex items-center justify-center w-10 h-10 rounded-sm bg-blue-50 mb-3"><i class="fas fa-handshake text-lg text-blue-600"></i></div>
+            <h4 class="font-display text-base font-bold text-slate-900 uppercase mb-1">Social License</h4>
+            <p class="text-slate-500 text-xs leading-relaxed">Membangun kepercayaan publik dan memperkuat hubungan perusahaan dengan komunitas sekitar.</p>
+          </div>
+          <div class="card-hover bg-white border border-slate-200 rounded-sm p-5 text-center shadow-sm">
+            <div class="inline-flex items-center justify-center w-10 h-10 rounded-sm bg-amber-50 mb-3"><i class="fas fa-people-group text-lg text-gold-500"></i></div>
+            <h4 class="font-display text-base font-bold text-slate-900 uppercase mb-1">Community Dev</h4>
+            <p class="text-slate-500 text-xs leading-relaxed">70% anggota adalah pemuda lokal — kontribusi nyata terhadap pengembangan masyarakat.</p>
+          </div>
+          <div class="card-hover bg-white border border-slate-200 rounded-sm p-5 text-center shadow-sm">
+            <div class="inline-flex items-center justify-center w-10 h-10 rounded-sm bg-emerald-50 mb-3"><i class="fas fa-heart-pulse text-lg text-emerald-500"></i></div>
+            <h4 class="font-display text-base font-bold text-slate-900 uppercase mb-1">Well-being</h4>
+            <p class="text-slate-500 text-xs leading-relaxed">Olahraga rutin meningkatkan kesehatan fisik dan mental, berdampak pada produktivitas kerja.</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-arrows">
+        <button data-dir="up" aria-label="Sebelumnya"><i class="fas fa-chevron-up text-sm"></i></button>
+        <button data-dir="down" aria-label="Berikutnya"><i class="fas fa-chevron-down text-sm"></i></button>
+      </div>
+    </section>
+
+    <section class="snap-section bg-white" data-index="4" data-hpages="2">
+      <div class="h-pages" id="timeline-pages">
+        <div class="h-page">
+          <div class="max-w-3xl w-full">
+            <div class="text-center mb-8">
+              <p class="text-blue-600 font-display text-sm tracking-[0.2em] uppercase mb-2">Jejak Langkah</p>
+              <h3 class="font-display text-4xl sm:text-5xl font-bold text-slate-900 uppercase">Kronologi <span class="text-gold-500">Prestasi</span></h3>
+            </div>
+            <div class="space-y-6">
+              <div class="flex gap-4">
+                <div class="shrink-0 w-10 h-10 rounded-full bg-blue-50 border-2 border-blue-400 flex items-center justify-center"><i class="fas fa-flag text-sm text-blue-600"></i></div>
+                <div>
+                  <span class="text-blue-600 text-xs font-semibold tracking-wider uppercase">Awal 2024</span>
+                  <h4 class="font-display text-lg font-bold text-slate-900 uppercase mt-0.5">Pembentukan Tim</h4>
+                  <p class="text-slate-500 text-sm">Berawal dari inisiatif pekerja kontrak yang bermain sepak bola selepas jam kerja di area PLTU. Dari hobi bersama, terbentuk solidaritas lintas divisi.</p>
+                </div>
+              </div>
+              <div class="flex gap-4">
+                <div class="shrink-0 w-10 h-10 rounded-full bg-blue-50 border-2 border-blue-400 flex items-center justify-center"><i class="fas fa-user-plus text-sm text-blue-600"></i></div>
+                <div>
+                  <span class="text-blue-600 text-xs font-semibold tracking-wider uppercase">Pertengahan 2024</span>
+                  <h4 class="font-display text-lg font-bold text-slate-900 uppercase mt-0.5">Rekrutmen Talenta Lokal</h4>
+                  <p class="text-slate-500 text-sm">Merekrut pemain berbakat dari wilayah Cirebon. Komposisi tim mencapai 70% pemuda lokal yang juga bekerja di pembangkit.</p>
+                </div>
+              </div>
+              <div class="flex gap-4">
+                <div class="shrink-0 w-10 h-10 rounded-full bg-amber-50 border-2 border-gold-400 flex items-center justify-center"><i class="fas fa-trophy text-sm text-gold-500"></i></div>
+                <div>
+                  <span class="text-gold-500 text-xs font-semibold tracking-wider uppercase">Akhir 2024</span>
+                  <h4 class="font-display text-lg font-bold text-slate-900 uppercase mt-0.5">Runner-Up Turnamen Lokal</h4>
+                  <p class="text-slate-500 text-sm">Mencapai posisi Runner-Up dalam turnamen sepak bola antar-komunitas di Kabupaten Cirebon.</p>
+                </div>
+              </div>
+            </div>
+            <div class="text-right mt-8">
+              <a href="#" data-hdir="next" class="text-slate-400 hover:text-blue-600 text-xs transition-colors">Selanjutnya &rarr;</a>
+            </div>
+          </div>
+        </div>
+        <div class="h-page">
+          <div class="max-w-3xl w-full">
+            <div class="text-center mb-4">
+              <p class="text-blue-600 font-display text-sm tracking-[0.2em] uppercase mb-2">Jejak Langkah</p>
+              <h3 class="font-display text-4xl sm:text-5xl font-bold text-slate-900 uppercase">Kronologi <span class="text-gold-500">Prestasi</span></h3>
+            </div>
+            <div class="space-y-6">
+              <div class="flex gap-4">
+                <div class="shrink-0 w-10 h-10 rounded-full bg-blue-50 border-2 border-blue-400 flex items-center justify-center"><i class="fas fa-handshake text-sm text-blue-600"></i></div>
+                <div>
+                  <span class="text-blue-600 text-xs font-semibold tracking-wider uppercase">Awal 2025</span>
+                  <h4 class="font-display text-lg font-bold text-slate-900 uppercase mt-0.5">Eksibisi dengan Instansi</h4>
+                  <p class="text-slate-500 text-sm">Menggelar pertandingan eksibisi melawan tim dari instansi pemerintah daerah, membuka jejaring dan membangun reputasi.</p>
+                </div>
+              </div>
+              <div class="flex gap-4">
+                <div class="shrink-0 w-10 h-10 rounded-full bg-amber-50 border-2 border-gold-400 flex items-center justify-center"><i class="fas fa-people-group text-sm text-gold-500"></i></div>
+                <div>
+                  <span class="text-gold-500 text-xs font-semibold tracking-wider uppercase">Berlanjut</span>
+                  <h4 class="font-display text-lg font-bold text-slate-900 uppercase mt-0.5">Keterlibatan Komunitas</h4>
+                  <p class="text-slate-500 text-sm">Aktif berpartisipasi dalam kegiatan sosial dan kemasyarakatan di Kabupaten Cirebon, memperkuat peran sebagai agen perubahan positif.</p>
+                </div>
+              </div>
+            </div>
+            <div class="text-left mt-8">
+              <a href="#" data-hdir="prev" class="text-slate-400 hover:text-blue-600 text-xs transition-colors">&larr; Sebelumnya</a>
+            </div>
+            <div class="mt-4 text-center">
+              <p class="text-slate-400 text-xs italic">Perjalanan Tim JOKER terus berlanjut — setiap langkah adalah bukti komitmen terhadap komunitas, solidaritas, dan prestasi.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section-arrows">
+        <button data-dir="up" aria-label="Sebelumnya"><i class="fas fa-chevron-up text-sm"></i></button>
+        <button data-dir="down" aria-label="Berikutnya"><i class="fas fa-chevron-down text-sm"></i></button>
+      </div>
+    </section>
+
+    <section class="snap-section bg-slate-50" data-index="5">
+      <div class="max-w-4xl mx-auto w-full px-6 text-center">
+        <p class="text-blue-600 font-display text-sm tracking-[0.2em] uppercase mb-2">Di Balik Tim</p>
+        <h3 class="font-display text-4xl sm:text-5xl font-bold text-slate-900 uppercase mb-3">Man Behind <span class="text-gold-500">The Team</span></h3>
+        <p class="text-slate-500 max-w-xl mx-auto text-sm mb-14">Para pengurus dan pembina yang memastikan Tim JOKER tetap solid, sehat, dan kompetitif.</p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-10">
+          <div class="flex flex-col items-center">
+            <div class="w-28 h-28 rounded-full bg-blue-600 text-white flex items-center justify-center text-3xl font-bold font-display ring-4 ring-blue-100 shadow-lg mb-4">JM</div>
+            <p class="font-semibold text-slate-800 text-sm">Jumadi</p>
+            <p class="text-blue-600 text-xs font-semibold tracking-wider uppercase mt-1">Pembina Utama</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="w-28 h-28 rounded-full bg-gold-500 text-white flex items-center justify-center text-3xl font-bold font-display ring-4 ring-amber-100 shadow-lg mb-4">JS</div>
+            <p class="font-semibold text-slate-800 text-sm">Juli S</p>
+            <p class="text-gold-600 text-xs font-semibold tracking-wider uppercase mt-1">Pelatih / Manajer</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="w-28 h-28 rounded-full bg-emerald-600 text-white flex items-center justify-center text-3xl font-bold font-display ring-4 ring-emerald-100 shadow-lg mb-4">KM</div>
+            <p class="font-semibold text-slate-800 text-sm">Komar</p>
+            <p class="text-emerald-600 text-xs font-semibold tracking-wider uppercase mt-1">Therapist / Kesehatan</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="w-28 h-28 rounded-full bg-slate-600 text-white flex items-center justify-center text-3xl font-bold font-display ring-4 ring-slate-200 shadow-lg mb-4">RS</div>
+            <p class="font-semibold text-slate-800 text-sm">Rudy S</p>
+            <p class="text-slate-500 text-xs font-semibold tracking-wider uppercase mt-1">Admin</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-arrows">
+        <button data-dir="up" aria-label="Sebelumnya"><i class="fas fa-chevron-up text-sm"></i></button>
+        <button data-dir="down" aria-label="Berikutnya"><i class="fas fa-chevron-down text-sm"></i></button>
+      </div>
+    </section>
+
+    <section class="snap-section bg-slate-900 text-white" data-index="6">
+      <div class="text-center px-6">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-sm border border-white/10 bg-slate-800 mb-6">
+          <i class="fas fa-shield-haltered text-2xl text-gold-400"></i>
+        </div>
+        <h4 class="font-display text-2xl font-bold uppercase tracking-wider mb-3">JOKER FC</h4>
+        <p class="text-slate-400 text-sm mb-8">Kebersamaan. Kegembiraan. Optimisme. Ambisi. Prestasi.</p>
+        <div class="flex justify-center gap-6 text-slate-400 text-sm">
+          <span>PLTU Cirebon</span><span class="text-slate-700">|</span><span>Kabupaten Cirebon</span><span class="text-slate-700">|</span><span>Jawa Barat</span>
+        </div>
+        <p class="text-slate-600 text-xs mt-8">Proposal Interaktif &copy; 2025 — Tim JOKER FC</p>
+      </div>
+      <div class="section-arrows">
+        <button data-dir="up" aria-label="Sebelumnya"><i class="fas fa-chevron-up text-sm"></i></button>
+        <button disabled aria-label="Berikutnya"><i class="fas fa-chevron-down text-sm"></i></button>
+      </div>
+    </section>
+
+  </div>
+
+  <div id="nav-dots"></div>
+
+  <script>
+  (function () {
+    var cover       = document.getElementById('cover');
+    var btnOpen     = document.getElementById('btn-open');
+    var snapCont    = document.getElementById('snap-container');
+    var navDots     = document.getElementById('nav-dots');
+    var sections    = snapCont.querySelectorAll('.snap-section');
+    var totalSections = sections.length;
+
+    sections.forEach(function (sec, i) {
+      var dot = document.createElement('div');
+      dot.className = 'dot';
+      dot.title = 'Bagian ' + (i + 1);
+      dot.addEventListener('click', function () { scrollToSection(i); });
+      navDots.appendChild(dot);
+    });
+    var dots = navDots.querySelectorAll('.dot');
+
+    btnOpen.addEventListener('click', function () {
+      cover.classList.add('fade-out');
+      snapCont.classList.add('active');
+      navDots.classList.add('visible');
+      var arrows = document.querySelectorAll('.section-arrows');
+      for (var a = 0; a < arrows.length; a++) arrows[a].classList.add('visible');
+      document.body.style.overflow = 'auto';
+      updateActiveDot();
+    });
+
+    function scrollToSection(index) {
+      sections[index].scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-dir]');
+      if (!btn) return;
+      var section = btn.closest('.snap-section');
+      if (!section) return;
+      var idx = parseInt(section.dataset.index);
+      var dir = btn.dataset.dir;
+      var targetIdx = dir === 'down' ? idx + 1 : idx - 1;
+      if (targetIdx >= 0 && targetIdx < totalSections) {
+        scrollToSection(targetIdx);
+      }
+    });
+
+    function updateActiveDot() {
+      var closest = 0;
+      var minDist = Infinity;
+      sections.forEach(function (sec, i) {
+        var dist = Math.abs(sec.getBoundingClientRect().top);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      dots.forEach(function (d, i) { d.classList.toggle('active', i === closest); });
+
+      sections.forEach(function (sec, i) {
+        var btns = sec.querySelectorAll('.section-arrows button');
+        btns.forEach(function (b) {
+          if (b.dataset.dir === 'up')   b.disabled = (i === 0);
+          if (b.dataset.dir === 'down') b.disabled = (i === totalSections - 1);
+        });
+      });
+    }
+
+    snapCont.addEventListener('scroll', updateActiveDot, { passive: true });
+    window.addEventListener('resize', updateActiveDot);
+
+    var hPagesContainer = document.getElementById('timeline-pages');
+    if (hPagesContainer) {
+      document.addEventListener('click', function (e) {
+        var link = e.target.closest('[data-hdir]');
+        if (!link || !hPagesContainer.contains(link)) return;
+        e.preventDefault();
+        var dir = link.dataset.hdir;
+        var pageWidth = hPagesContainer.clientWidth;
+        var cur = Math.round(hPagesContainer.scrollLeft / pageWidth);
+        var total = hPagesContainer.querySelectorAll('.h-page').length;
+        var target = dir === 'next' ? Math.min(total - 1, cur + 1) : Math.max(0, cur - 1);
+        hPagesContainer.scrollTo({ left: target * pageWidth, behavior: 'smooth' });
+      });
+    }
+
+    function renderKatex() {
+      var localEl = document.getElementById('katex-local');
+      var workerEl = document.getElementById('katex-worker');
+      if (typeof katex !== 'undefined') {
+        if (localEl)  katex.render('\\approx 70\\%', localEl,  { displayMode: true, throwOnError: false });
+        if (workerEl) katex.render('100\\%',         workerEl, { displayMode: true, throwOnError: false });
+      } else {
+        if (localEl)  localEl.innerHTML  = '<span style="font-family:Barlow Condensed,sans-serif;font-size:3rem;font-weight:900;color:#d4a535;">&asymp; 70%</span>';
+        if (workerEl) workerEl.innerHTML = '<span style="font-family:Barlow Condensed,sans-serif;font-size:3rem;font-weight:900;color:#d4a535;">100%</span>';
+      }
+    }
+    renderKatex();
+    window.addEventListener('load', renderKatex);
+  })();
+  </script>
+</body>
+</html>
