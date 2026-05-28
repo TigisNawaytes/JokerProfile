@@ -65,10 +65,18 @@
       mask-image: radial-gradient(ellipse at 70% 30%, black 25%, transparent 65%);
     }
     @keyframes coverPulse {
-      0%,100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.25); }
-      50%     { box-shadow: 0 0 0 16px rgba(37,99,235,0); }
+      0%,100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.3), 0 8px 24px rgba(37,99,235,0.25); }
+      50%     { box-shadow: 0 0 0 18px rgba(37,99,235,0), 0 8px 24px rgba(37,99,235,0.15); }
     }
-    .cover-pulse { animation: coverPulse 2.5s ease-in-out infinite; }
+    .cover-pulse { animation: coverPulse 2.5s ease-in-out infinite; box-shadow: 0 8px 24px rgba(37,99,235,0.25); }
+
+    #btn-back-cover {
+      position: fixed; top: 20px; right: 20px; z-index: 160;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.3s ease;
+      transform: translateY(-10px);
+    }
+    #btn-back-cover.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
     #snap-container {
       height: 100vh; height: 100dvh; overflow-y: auto; overflow-x: hidden;
@@ -151,7 +159,7 @@
 
     .katex { font-size: 1.1em !important; }
     .katex-display { margin: 0.4em 0 !important; }
-    .stat-katex .katex { font-size: 1.8em !important; }
+    .stat-katex .katex { font-size: 2em !important; }
 
     @media print {
       .frame-overlay, #cover, #nav-dots, .section-arrows, .h-nav, .no-print { display: none !important; }
@@ -184,32 +192,43 @@
     <div class="cover-dots"></div>
 
     <div class="relative z-10 text-center px-6 max-w-3xl mx-auto">
-      <div class="mb-8 inline-flex items-center justify-center w-20 h-20 rounded-sm border-2 border-blue-200 bg-white">
-        <i class="fas fa-shield-haltered text-4xl text-blue-600"></i>
+      <div class="mb-10 inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-blue-50 to-white border-2 border-blue-100 shadow-md">
+        <i class="fas fa-shield-haltered text-5xl text-blue-600"></i>
       </div>
+
       <h1 class="font-display text-[5.5rem] sm:text-[7rem] md:text-[8.5rem] font-black tracking-[0.01em] text-slate-900 uppercase leading-[0.85] mb-0">JOKER</h1>
-      <div class="flex items-center justify-center gap-3 mb-10 mt-1">
-        <span class="h-px w-10 bg-blue-400"></span>
-        <span class="font-display text-2xl sm:text-3xl font-semibold tracking-[0.25em] text-blue-600 uppercase">FC</span>
-        <span class="h-px w-10 bg-blue-400"></span>
+      <div class="flex items-center justify-center gap-4 mb-12 mt-1">
+        <span class="h-px w-12 bg-gradient-to-r from-transparent to-blue-400"></span>
+        <span class="font-display text-2xl sm:text-3xl font-semibold tracking-[0.3em] text-blue-600 uppercase">FC</span>
+        <span class="h-px w-12 bg-gradient-to-l from-transparent to-blue-400"></span>
       </div>
-      <div class="inline-block bg-white border border-slate-200 rounded-sm px-8 py-5 mb-10 shadow-sm">
-        <p class="text-slate-400 text-xs tracking-[0.2em] uppercase mb-1">Kepada Yang Terhormat</p>
-        <p class="text-slate-800 font-semibold text-sm sm:text-base">Manajemen &amp; Divisi ComRel</p>
-        <p class="text-slate-800 font-semibold text-sm sm:text-base">PLTU Cirebon</p>
+
+      <div class="inline-block bg-white border border-slate-200 rounded-xl px-10 py-6 mb-12 shadow-lg shadow-slate-200/50">
+        <p class="text-slate-400 text-[0.7rem] tracking-[0.25em] uppercase mb-2">Kepada Yang Terhormat</p>
+        <p class="text-slate-800 font-semibold text-base sm:text-lg">Manajemen &amp; Divisi ComRel</p>
+        <p class="text-slate-800 font-semibold text-base sm:text-lg">PLTU Cirebon</p>
       </div>
+
       <button id="btn-open"
-              class="cover-pulse inline-flex items-center gap-3 px-10 py-4 rounded-sm
+              class="cover-pulse inline-flex items-center gap-3 px-12 py-5 rounded-full
                      bg-blue-600 hover:bg-blue-700 text-white font-display text-lg font-semibold
                      tracking-wider uppercase transition-all duration-300
-                     hover:shadow-lg hover:shadow-blue-600/20 active:scale-95">
+                     hover:shadow-2xl hover:shadow-blue-600/40 active:scale-95">
         <i class="fas fa-arrow-right text-sm"></i>
         Buka Profil Tim JOKER
       </button>
+
+      <p class="mt-10 text-slate-300 text-[0.65rem] tracking-wider">Created &amp; Designed by <span class="text-slate-400 font-medium">Setyawan90</span></p>
     </div>
   </div>
 
   <div id="snap-container">
+
+    <button id="btn-back-cover"
+            class="w-10 h-10 rounded-full bg-white border border-slate-200 shadow-md flex items-center justify-center text-slate-400 hover:text-blue-600 hover:border-blue-400 transition-colors"
+            title="Kembali ke halaman depan">
+      <i class="fas fa-home text-sm"></i>
+    </button>
 
     <section class="snap-section bg-white overflow-hidden" data-index="0">
       <div class="absolute inset-0">
@@ -278,33 +297,43 @@
       <div class="relative max-w-3xl mx-auto w-full px-6 text-center">
         <p class="text-blue-600 font-display text-sm tracking-[0.2em] uppercase mb-1">Komposisi Tim</p>
         <h3 class="font-display text-3xl sm:text-4xl font-bold text-slate-900 uppercase mb-1">Kekuatan <span class="text-gold-500">Kami</span></h3>
-        <p class="text-slate-500 max-w-lg mx-auto text-xs mb-10">Dibangun oleh talenta lokal dan dedikasi pekerja — satu kesatuan yang solid.</p>
+        <p class="text-slate-500 max-w-lg mx-auto text-xs mb-12">Dibangun oleh talenta lokal dan dedikasi pekerja — satu kesatuan yang solid.</p>
 
-        <div class="grid grid-cols-3 gap-6 sm:gap-4">
-          <div class="flex flex-col items-center">
-            <div class="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center mb-3 ring-2 ring-blue-100/50">
-              <i class="fas fa-users text-lg text-blue-600"></i>
+        <div class="grid grid-cols-3 gap-4 sm:gap-6">
+          <div class="flex flex-col items-center group">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center mb-4 ring-2 ring-blue-200/60 shadow-sm group-hover:ring-blue-400 group-hover:shadow-md transition-all duration-300">
+              <i class="fas fa-users text-xl text-blue-600"></i>
             </div>
             <div id="katex-local" class="mb-0 stat-katex"></div>
-            <p class="font-display text-sm font-bold text-slate-900 uppercase tracking-wider">Pemuda Lokal</p>
-            <p class="text-slate-400 text-[0.65rem] mt-0.5">Talenta Cirebon</p>
+            <p class="font-display text-sm font-bold text-slate-800 uppercase tracking-wider mt-1">Pemuda Lokal</p>
+            <p class="text-slate-400 text-[0.65rem] mt-0.5">Talenta asli Cirebon</p>
           </div>
-          <div class="flex flex-col items-center">
-            <div class="w-14 h-14 rounded-full bg-amber-50 flex items-center justify-center mb-3 ring-2 ring-amber-100/50">
-              <i class="fas fa-hard-hat text-lg text-gold-500"></i>
+          <div class="flex flex-col items-center group">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center mb-4 ring-2 ring-amber-200/60 shadow-sm group-hover:ring-amber-400 group-hover:shadow-md transition-all duration-300">
+              <i class="fas fa-hard-hat text-xl text-gold-500"></i>
             </div>
             <div id="katex-worker" class="mb-0 stat-katex"></div>
-            <p class="font-display text-sm font-bold text-slate-900 uppercase tracking-wider">Pekerja PLTU</p>
-            <p class="text-slate-400 text-[0.65rem] mt-0.5">Berbasis pembangkit</p>
+            <p class="font-display text-sm font-bold text-slate-800 uppercase tracking-wider mt-1">Pekerja PLTU</p>
+            <p class="text-slate-400 text-[0.65rem] mt-0.5">Berbasis operasional</p>
           </div>
-          <div class="flex flex-col items-center">
-            <div class="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center mb-3 ring-2 ring-emerald-100/50">
-              <i class="fas fa-futbol text-lg text-emerald-500"></i>
+          <div class="flex flex-col items-center group">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-50 to-emerald-100 flex items-center justify-center mb-4 ring-2 ring-emerald-200/60 shadow-sm group-hover:ring-emerald-400 group-hover:shadow-md transition-all duration-300">
+              <i class="fas fa-futbol text-xl text-emerald-500"></i>
             </div>
             <span class="font-display text-3xl sm:text-4xl font-black text-gold-500 leading-none">30<span class="text-slate-400">+</span></span>
-            <p class="font-display text-sm font-bold text-slate-900 uppercase tracking-wider mt-1">Personil Aktif</p>
+            <p class="font-display text-sm font-bold text-slate-800 uppercase tracking-wider mt-1">Personil Aktif</p>
             <p class="text-slate-400 text-[0.65rem] mt-0.5">Solidaritas lintas divisi</p>
           </div>
+        </div>
+
+        <div class="mt-12 pt-8 border-t border-slate-100">
+          <p class="text-slate-500 text-xs leading-relaxed max-w-xl mx-auto italic">
+            Dibentuk sepenuhnya dari talenta dan tenaga kerja lokal Cirebon — 
+            <span class="text-blue-600 not-italic font-medium">≈70% pemuda setempat</span>, 
+            <span class="text-gold-500 not-italic font-medium">100% berbasis pekerja PLTU</span>, dengan 
+            <span class="text-gold-500 not-italic font-medium">30+ personil</span> 
+            yang solid dan terus bertumbuh.
+          </p>
         </div>
       </div>
       <div class="section-arrows">
@@ -426,28 +455,28 @@
       <div class="max-w-4xl mx-auto w-full px-6 text-center">
         <p class="text-blue-600 font-display text-sm tracking-[0.2em] uppercase mb-2">Di Balik Tim</p>
         <h3 class="font-display text-4xl sm:text-5xl font-bold text-slate-900 uppercase mb-3">Man Behind <span class="text-gold-500">The Team</span></h3>
-        <p class="text-slate-500 max-w-xl mx-auto text-sm mb-14">Para pengurus dan pembina yang memastikan Tim JOKER tetap solid, sehat, dan kompetitif.</p>
+        <p class="text-slate-500 max-w-xl mx-auto text-sm mb-12">Para pengurus dan pembina yang memastikan Tim JOKER tetap solid, sehat, dan kompetitif.</p>
 
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-10">
-          <div class="flex flex-col items-center">
-            <div class="w-28 h-28 rounded-full bg-blue-600 text-white flex items-center justify-center text-3xl font-bold font-display ring-4 ring-blue-100 shadow-lg mb-4">JM</div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100 flex flex-col items-center card-hover">
+            <div class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center justify-center text-3xl font-bold font-display ring-4 ring-blue-100 shadow-md mb-4">JM</div>
             <p class="font-semibold text-slate-800 text-sm">Jumadi</p>
-            <p class="text-blue-600 text-xs font-semibold tracking-wider uppercase mt-1">Pembina Utama</p>
+            <p class="text-blue-600 text-[0.65rem] font-semibold tracking-wider uppercase mt-1">Pembina Utama</p>
           </div>
-          <div class="flex flex-col items-center">
-            <div class="w-28 h-28 rounded-full bg-gold-500 text-white flex items-center justify-center text-3xl font-bold font-display ring-4 ring-amber-100 shadow-lg mb-4">JS</div>
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100 flex flex-col items-center card-hover">
+            <div class="w-24 h-24 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-white flex items-center justify-center text-3xl font-bold font-display ring-4 ring-amber-100 shadow-md mb-4">JS</div>
             <p class="font-semibold text-slate-800 text-sm">Juli S</p>
-            <p class="text-gold-600 text-xs font-semibold tracking-wider uppercase mt-1">Pelatih / Manajer</p>
+            <p class="text-gold-600 text-[0.65rem] font-semibold tracking-wider uppercase mt-1">Pelatih / Manajer</p>
           </div>
-          <div class="flex flex-col items-center">
-            <div class="w-28 h-28 rounded-full bg-emerald-600 text-white flex items-center justify-center text-3xl font-bold font-display ring-4 ring-emerald-100 shadow-lg mb-4">KM</div>
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100 flex flex-col items-center card-hover">
+            <div class="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 text-white flex items-center justify-center text-3xl font-bold font-display ring-4 ring-emerald-100 shadow-md mb-4">KM</div>
             <p class="font-semibold text-slate-800 text-sm">Komar</p>
-            <p class="text-emerald-600 text-xs font-semibold tracking-wider uppercase mt-1">Therapist / Kesehatan</p>
+            <p class="text-emerald-600 text-[0.65rem] font-semibold tracking-wider uppercase mt-1">Therapist / Kesehatan</p>
           </div>
-          <div class="flex flex-col items-center">
-            <div class="w-28 h-28 rounded-full bg-slate-600 text-white flex items-center justify-center text-3xl font-bold font-display ring-4 ring-slate-200 shadow-lg mb-4">RS</div>
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100 flex flex-col items-center card-hover">
+            <div class="w-24 h-24 rounded-full bg-gradient-to-br from-slate-500 to-slate-700 text-white flex items-center justify-center text-3xl font-bold font-display ring-4 ring-slate-200 shadow-md mb-4">RS</div>
             <p class="font-semibold text-slate-800 text-sm">Rudy S</p>
-            <p class="text-slate-500 text-xs font-semibold tracking-wider uppercase mt-1">Admin</p>
+            <p class="text-slate-500 text-[0.65rem] font-semibold tracking-wider uppercase mt-1">Admin</p>
           </div>
         </div>
       </div>
@@ -468,6 +497,7 @@
           <span>PLTU Cirebon</span><span class="text-slate-700">|</span><span>Kabupaten Cirebon</span><span class="text-slate-700">|</span><span>Jawa Barat</span>
         </div>
         <p class="text-slate-600 text-xs mt-8">Proposal Interaktif &copy; 2025 — Tim JOKER FC</p>
+        <p class="text-slate-500/50 text-[0.6rem] mt-3 tracking-wider">Created &amp; Designed by <span class="text-slate-400">Setyawan90</span></p>
       </div>
       <div class="section-arrows">
         <button data-dir="up" aria-label="Sebelumnya"><i class="fas fa-chevron-up text-sm"></i></button>
@@ -483,6 +513,7 @@
   (function () {
     var cover       = document.getElementById('cover');
     var btnOpen     = document.getElementById('btn-open');
+    var btnBack     = document.getElementById('btn-back-cover');
     var snapCont    = document.getElementById('snap-container');
     var navDots     = document.getElementById('nav-dots');
     var sections    = snapCont.querySelectorAll('.snap-section');
@@ -501,10 +532,21 @@
       cover.classList.add('fade-out');
       snapCont.classList.add('active');
       navDots.classList.add('visible');
+      btnBack.classList.add('visible');
       var arrows = document.querySelectorAll('.section-arrows');
       for (var a = 0; a < arrows.length; a++) arrows[a].classList.add('visible');
       document.body.style.overflow = 'auto';
       updateActiveDot();
+    });
+
+    btnBack.addEventListener('click', function () {
+      cover.classList.remove('fade-out');
+      snapCont.classList.remove('active');
+      navDots.classList.remove('visible');
+      btnBack.classList.remove('visible');
+      var arrows = document.querySelectorAll('.section-arrows');
+      for (var a = 0; a < arrows.length; a++) arrows[a].classList.remove('visible');
+      document.body.style.overflow = 'hidden';
     });
 
     function scrollToSection(index) {
