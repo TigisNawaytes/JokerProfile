@@ -177,6 +177,92 @@
       #nav-dots { right: 8px; gap: 8px; }
       #nav-dots .dot { width: 8px; height: 8px; }
     }
+
+    /* ======== BACKGROUND IMAGE SYSTEM ======== */
+    .section-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-size: cover; background-position: center; background-repeat: no-repeat;
+    }
+    .section-overlay { position: absolute; inset: 0; z-index: 1; }
+    
+    .bg-latar { background-position: center 35%; }
+
+    /* Desktop backgrounds (1600x900) */
+    .bg-cover          { background-image: url('assets/images/desktop/Joker-Player-Join-Cirebon-Power-and-Win-1st-Place-of-KAI-Futsal-2024.webp'); }
+    .bg-strategic      { background-image: url('assets/images/desktop/Before-Match-in-Tournament.webp'); }
+    .bg-latar          { background-image: url('assets/images/desktop/Training-Session.webp'); }
+    .bg-komposisi      { background-image: url('assets/images/desktop/Team-Gahtering-During-Tournament.webp'); }
+    .bg-nilai          { background-image: url('assets/images/desktop/Training-Session.webp'); }
+    .bg-timeline-p1    { background-image: url('assets/images/desktop/Juara-2-Turnamen-Kuwu-Cup-Kanci.webp'); }
+    .bg-timeline-p2    { background-image: url('assets/images/desktop/Juara-2-Turnamen-Open-Kuwu-Cup-Danawinangun.webp'); }
+    .bg-man-behind     { background-image: url('assets/images/desktop/Team-Gahtering-During-Tournament.webp'); }
+    .bg-credits        { background-image: url('assets/images/desktop/Joker-Supporter-During-Match.webp'); }
+
+    /* Mobile backgrounds (800x450) */
+    @media (max-width: 767px) {
+      .bg-cover          { background-image: url('assets/images/mobile/Joker-Player-Join-Cirebon-Power-and-Win-1st-Place-of-KAI-Futsal-2024.webp'); }
+      .bg-strategic      { background-image: url('assets/images/mobile/Before-Match-in-Tournament.webp'); }
+      .bg-latar          { background-image: url('assets/images/mobile/Training-Session.webp'); }
+      .bg-komposisi      { background-image: url('assets/images/mobile/Team-Gahtering-During-Tournament.webp'); }
+      .bg-nilai          { background-image: url('assets/images/mobile/Training-Session.webp'); }
+      .bg-timeline-p1    { background-image: url('assets/images/mobile/Juara-2-Turnamen-Kuwu-Cup-Kanci.webp'); }
+      .bg-timeline-p2    { background-image: url('assets/images/mobile/Juara-2-Turnamen-Open-Kuwu-Cup-Danawinangun.webp'); }
+      .bg-man-behind     { background-image: url('assets/images/mobile/Team-Gahtering-During-Tournament.webp'); }
+      .bg-credits        { background-image: url('assets/images/mobile/Joker-Supporter-During-Match.webp'); }
+    }
+
+    /* ======== COVER REDESIGN (Hero Modern) ======== */
+    #cover {
+      background: #1e293b !important;
+      overflow: hidden;
+    }
+    .cover-bg-img {
+      position: absolute; inset: 0; z-index: 0;
+      background-size: contain; background-position: center; background-repeat: no-repeat;
+      background-color: #1e293b;
+    }
+    .cover-bg-img::after {
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to bottom, rgba(30,58,138,0.70) 0%, rgba(30,58,138,0.50) 40%, rgba(30,58,138,0.80) 100%);
+    }
+    @media (max-width: 767px) {
+      .cover-bg-img { background-position: center 25%; }
+      .cover-bg-img::after { background: linear-gradient(to bottom, rgba(30,58,138,0.75) 0%, rgba(30,58,138,0.60) 50%, rgba(30,58,138,0.85) 100%); }
+    }
+
+    .cover-logo-ring {
+      animation: logoReveal 1s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    @keyframes logoReveal {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .cover-title-line {
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+    }
+    .cover-title-line::before,
+    .cover-title-line::after {
+      content: ''; height: 2px; flex: 1; max-width: 60px;
+      background: linear-gradient(to right, transparent, #d4a535);
+    }
+    .cover-title-line::after { background: linear-gradient(to left, transparent, #d4a535); }
+
+    @keyframes coverPulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(212,165,53,0.35), 0 8px 28px rgba(212,165,53,0.2); }
+      50%     { box-shadow: 0 0 0 20px rgba(212,165,53,0), 0 8px 28px rgba(212,165,53,0.1); }
+    }
+    .cover-pulse {
+      animation: coverPulse 2.5s ease-in-out infinite;
+      box-shadow: 0 8px 28px rgba(212,165,53,0.2);
+      transition: all 0.3s ease;
+    }
+    .cover-pulse:hover { transform: translateY(-2px); }
+    .cover-pulse:active { transform: scale(0.96); }
+
+    @media (max-width: 480px) {
+      .cover-title-line::before, .cover-title-line::after { max-width: 32px; }
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-body">
@@ -184,41 +270,49 @@
   <div class="frame-overlay"></div>
 
   <div id="cover">
-    <div class="cover-circle-lg"></div>
-    <div class="cover-circle-sm"></div>
-    <div class="cover-line-h"></div>
-    <div class="cover-line-v"></div>
-    <div class="cover-line-v2"></div>
-    <div class="cover-dots"></div>
+    <div class="cover-bg-img bg-cover"></div>
 
-    <div class="relative z-10 text-center px-6 max-w-3xl mx-auto">
-      <div class="mb-10 inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-blue-50 to-white border-2 border-blue-100 shadow-md">
-        <i class="fas fa-shield-haltered text-5xl text-blue-600"></i>
+    <div class="relative z-10 flex flex-col items-center justify-center h-full px-6">
+      <!-- Logo -->
+      <div class="cover-logo-ring mb-8 sm:mb-10">
+        <img src="assets/images/logo/joker-fc-logo.png" alt="JOKER FC"
+             class="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 object-contain drop-shadow-2xl"
+             onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-gold-400/20 to-gold-600/10 border-2 border-gold-500/30 flex items-center justify-center\'><i class=\'fas fa-shield-haltered text-4xl sm:text-5xl text-gold-400\'></i></div>'">
       </div>
 
-      <h1 class="font-display text-[5.5rem] sm:text-[7rem] md:text-[8.5rem] font-black tracking-[0.01em] text-slate-900 uppercase leading-[0.85] mb-0">JOKER</h1>
-      <div class="flex items-center justify-center gap-4 mb-12 mt-1">
-        <span class="h-px w-12 bg-gradient-to-r from-transparent to-blue-400"></span>
-        <span class="font-display text-2xl sm:text-3xl font-semibold tracking-[0.3em] text-blue-600 uppercase">FC</span>
-        <span class="h-px w-12 bg-gradient-to-l from-transparent to-blue-400"></span>
+      <!-- Title -->
+      <h1 class="font-display text-[5rem] sm:text-[7rem] md:text-[8.5rem] font-black tracking-[0.02em] text-white uppercase leading-[0.85] mb-0 drop-shadow-lg">JOKER</h1>
+
+      <div class="cover-title-line mt-1 mb-8 sm:mb-10">
+        <span class="font-display text-2xl sm:text-3xl font-bold tracking-[0.35em] text-gold-400 uppercase">FC</span>
       </div>
 
-      <div class="inline-block bg-white border border-slate-200 rounded-xl px-10 py-6 mb-12 shadow-lg shadow-slate-200/50">
-        <p class="text-slate-400 text-[0.7rem] tracking-[0.25em] uppercase mb-2">Kepada Yang Terhormat</p>
-        <p class="text-slate-800 font-semibold text-base sm:text-lg">Manajemen &amp; Divisi ComRel</p>
-        <p class="text-slate-800 font-semibold text-base sm:text-lg">PLTU Cirebon</p>
+      <!-- Tagline -->
+      <p class="text-white/70 text-sm sm:text-base tracking-wider font-light mb-6 sm:mb-8 max-w-md text-center leading-relaxed">
+        Tim Kebanggaan <span class="text-white font-medium">PLTU Cirebon</span>
+      </p>
+
+      <!-- Recipient -->
+      <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl px-8 sm:px-10 py-5 sm:py-6 mb-8 sm:mb-10 shadow-2xl max-w-xs sm:max-w-sm w-full">
+        <p class="text-white/50 text-[0.65rem] tracking-[0.2em] uppercase mb-2 text-center">Kepada Yang Terhormat</p>
+        <p class="text-white/90 font-semibold text-sm sm:text-base text-center">Manajemen &amp; Divisi ComRel</p>
+        <p class="text-white/80 font-medium text-sm text-center">PLTU Cirebon</p>
       </div>
 
+      <!-- CTA -->
       <button id="btn-open"
-              class="cover-pulse inline-flex items-center gap-3 px-12 py-5 rounded-full
-                     bg-blue-600 hover:bg-blue-700 text-white font-display text-lg font-semibold
-                     tracking-wider uppercase transition-all duration-300
-                     hover:shadow-2xl hover:shadow-blue-600/40 active:scale-95">
-        <i class="fas fa-arrow-right text-sm"></i>
+              class="cover-pulse inline-flex items-center gap-3 px-10 sm:px-12 py-4 sm:py-5 rounded-full
+                     bg-gold-500 hover:bg-gold-400 text-slate-900 font-display text-base sm:text-lg font-bold
+                     tracking-wider uppercase transition-all duration-300 active:scale-95
+                     shadow-xl shadow-gold-500/30">
+        <i class="fas fa-futbol text-sm"></i>
         Buka Profil Tim JOKER
       </button>
 
-      <p class="mt-10 text-slate-300 text-[0.65rem] tracking-wider">Created &amp; Designed by <span class="text-slate-400 font-medium">Setyawan90</span></p>
+      <!-- Footer -->
+      <p class="absolute bottom-6 sm:bottom-8 text-white/25 text-[0.6rem] tracking-wider">
+        Created &amp; Designed by <span class="text-white/40 font-medium">Setyawan90</span>
+      </p>
     </div>
   </div>
 
@@ -230,28 +324,25 @@
       <i class="fas fa-home text-sm"></i>
     </button>
 
-    <section class="snap-section bg-white overflow-hidden" data-index="0">
-      <div class="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1459865264687-595d652de67e?w=1600&q=80"
-             alt="" class="w-full h-full object-cover opacity-[0.06]"
-             onerror="this.style.display='none'">
-      </div>
-      <div class="absolute top-0 right-0 w-96 h-96 rounded-full bg-blue-600/5 -translate-y-1/2 translate-x-1/4"></div>
-      <div class="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-gold-500/5 translate-y-1/3 -translate-x-1/4"></div>
+    <section class="snap-section overflow-hidden" data-index="0">
+      <div class="section-bg bg-strategic"></div>
+      <div class="section-overlay bg-slate-900/[0.78]"></div>
+      <div class="absolute top-0 right-0 w-96 h-96 rounded-full bg-blue-500/10 -translate-y-1/2 translate-x-1/4 z-[15]"></div>
+      <div class="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-gold-500/8 translate-y-1/3 -translate-x-1/4 z-[15]"></div>
 
-      <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
-        <p class="text-blue-600 font-display text-sm sm:text-base tracking-[0.3em] uppercase mb-5">Proposal Interaktif</p>
-        <h2 class="font-display text-5xl sm:text-6xl md:text-7xl font-black tracking-tight text-slate-900 uppercase leading-[0.92] mb-6">
-          Lebih Dari<br><span class="text-blue-600">Sekadar Sepak Bola</span>
+      <div class="relative z-20 text-center px-6 max-w-4xl mx-auto">
+        <p class="text-blue-400 font-display text-sm sm:text-base tracking-[0.3em] uppercase mb-5">Proposal Interaktif</p>
+        <h2 class="font-display text-5xl sm:text-6xl md:text-7xl font-black tracking-tight text-white uppercase leading-[0.92] mb-6 drop-shadow-md">
+          Lebih Dari<br><span class="text-gold-400">Sekadar Sepak Bola</span>
         </h2>
-        <p class="text-slate-500 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-10">
+        <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-10">
           Inisiatif organik yang membuktikan bahwa olahraga mampu menyatukan,
           membangun karakter, dan menciptakan dampak sosial nyata di PLTU Cirebon.
         </p>
         <div class="flex flex-wrap justify-center gap-8 sm:gap-12">
-          <div class="text-center"><span class="block font-display text-4xl sm:text-5xl font-bold text-gold-500">2+</span><span class="text-slate-400 text-xs uppercase tracking-wider mt-1 block">Tahun Berdiri</span></div>
-          <div class="text-center"><span class="block font-display text-4xl sm:text-5xl font-bold text-gold-500">30+</span><span class="text-slate-400 text-xs uppercase tracking-wider mt-1 block">Anggota Aktif</span></div>
-          <div class="text-center"><span class="block font-display text-4xl sm:text-5xl font-bold text-gold-500">15+</span><span class="text-slate-400 text-xs uppercase tracking-wider mt-1 block">Turnamen</span></div>
+          <div class="text-center"><span class="block font-display text-4xl sm:text-5xl font-bold text-gold-400">4+</span><span class="text-slate-400 text-xs uppercase tracking-wider mt-1 block">Tahun Berdiri</span></div>
+          <div class="text-center"><span class="block font-display text-4xl sm:text-5xl font-bold text-gold-400">85</span><span class="text-slate-400 text-xs uppercase tracking-wider mt-1 block">Anggota Aktif</span></div>
+          <div class="text-center"><span class="block font-display text-4xl sm:text-5xl font-bold text-gold-400">20+</span><span class="text-slate-400 text-xs uppercase tracking-wider mt-1 block">Turnamen</span></div>
         </div>
       </div>
       <div class="section-arrows">
@@ -260,26 +351,28 @@
       </div>
     </section>
 
-    <section class="snap-section bg-slate-50" data-index="1">
-      <div class="max-w-6xl mx-auto w-full px-6">
-        <div class="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+    <section class="snap-section" data-index="1">
+      <div class="section-bg bg-latar"></div>
+      <div class="section-overlay bg-blue-900/75"></div>
+      <div class="relative z-10 max-w-6xl mx-auto w-full px-6 py-8 sm:py-12">
+        <div class="grid md:grid-cols-2 gap-6 md:gap-12 items-center">
           <div class="relative">
-            <div class="aspect-[4/3] rounded-sm overflow-hidden border border-slate-200 bg-white shadow-sm">
-              <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=800&q=80"
-                   alt="" class="w-full h-full object-cover"
-                   onerror="this.style.display='none'; this.parentElement.classList.add('bg-slate-100');">
+            <div class="aspect-[4/3] rounded-sm overflow-hidden border border-white/10 bg-slate-800/40 backdrop-blur-sm shadow-xl">
+              <img src="assets/images/desktop/Training-Session.webp"
+                   alt="" class="w-full h-full object-cover opacity-60"
+                   onerror="this.style.display='none';">
             </div>
-            <div class="absolute -bottom-3 -right-3 w-20 h-20 border-r-2 border-b-2 border-blue-400/40 rounded-br-sm"></div>
+            <div class="absolute -bottom-3 -right-3 w-20 h-20 border-r-2 border-b-2 border-gold-400/50 rounded-br-sm"></div>
           </div>
           <div>
-            <p class="text-blue-600 font-display text-sm tracking-[0.2em] uppercase mb-3">Latar Belakang</p>
-            <h3 class="font-display text-4xl sm:text-5xl font-bold text-slate-900 uppercase leading-tight mb-6">
-              Dari Lapangan<br>Ke <span class="text-gold-500">Solidaritas</span>
+            <p class="text-blue-300 font-display text-sm tracking-[0.2em] uppercase mb-2">Latar Belakang</p>
+            <h3 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white uppercase leading-tight mb-4 drop-shadow-md">
+              Dari Lapangan<br>Ke <span class="text-gold-400">Solidaritas</span>
             </h3>
-            <div class="space-y-3 text-slate-600 leading-relaxed text-sm sm:text-base">
-              <p>Tim JOKER lahir dari inisiatif para pekerja kontrak — petugas kebersihan, office boy, dan tim operasional lapangan — di PLTU Cirebon. Berawal dari permainan santai selepas jam kerja, semangat kebersamaan ini tumbuh menjadi klub sepak bola yang disiplin dan kompetitif.</p>
-              <p>Nama <strong class="text-slate-900 font-semibold">"JOKER"</strong> melambangkan elemen kejutan: dari latar sederhana, lahir kekuatan kolektif yang patut diperhitungkan di Cirebon.</p>
-              <p>Kini, Tim JOKER adalah bukti nyata bahwa <strong class="text-blue-600 font-semibold">kesejahteraan pekerja</strong> dan <strong class="text-gold-500 font-semibold">dampak sosial</strong> dapat tumbuh dari lapangan rumput.</p>
+            <div class="space-y-2.5 text-slate-200 leading-relaxed text-sm sm:text-base">
+              <p>Berdiri sejak <strong class="text-white font-semibold">1 Januari 2022</strong>, Tim JOKER FC lahir dari inisiatif para pekerja operasional — petugas kebersihan, office boy, dan tim lapangan — di PLTU Cirebon. Berawal dari permainan santai selepas jam kerja, semangat kebersamaan ini tumbuh menjadi klub sepak bola yang disiplin dan kompetitif dengan <strong class="text-gold-400 font-semibold">85 anggota aktif</strong>.</p>
+              <p>Nama <strong class="text-white font-semibold">"JOKER"</strong> melambangkan elemen kejutan: dari latar sederhana, lahir kekuatan kolektif yang patut diperhitungkan di Cirebon. Dalam <strong class="text-blue-300 font-semibold">20+ turnamen</strong>, tim ini telah meraih <strong class="text-gold-400 font-semibold">6 gelar juara</strong>.</p>
+              <p>Kini, Tim JOKER adalah bukti nyata bahwa <strong class="text-blue-300 font-semibold">kesejahteraan pekerja</strong> dan <strong class="text-gold-400 font-semibold">dampak sosial</strong> dapat tumbuh dari lapangan rumput.</p>
             </div>
           </div>
         </div>
@@ -290,14 +383,16 @@
       </div>
     </section>
 
-    <section class="snap-section bg-white" data-index="2">
-      <div class="absolute inset-0 opacity-[0.02]"
-           style="background-image:repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(37,99,235,0.9) 28px,rgba(37,99,235,0.9) 29px),repeating-linear-gradient(-45deg,transparent,transparent 28px,rgba(212,165,53,0.7) 28px,rgba(212,165,53,0.7) 29px);">
+    <section class="snap-section" data-index="2">
+      <div class="section-bg bg-komposisi"></div>
+      <div class="section-overlay bg-slate-900/80"></div>
+      <div class="absolute inset-0 opacity-[0.03] z-10"
+           style="background-image:repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(96,165,250,0.9) 28px,rgba(96,165,250,0.9) 29px),repeating-linear-gradient(-45deg,transparent,transparent 28px,rgba(251,191,36,0.7) 28px,rgba(251,191,36,0.7) 29px);">
       </div>
-      <div class="relative max-w-3xl mx-auto w-full px-6 text-center">
-        <p class="text-blue-600 font-display text-sm tracking-[0.2em] uppercase mb-1">Komposisi Tim</p>
-        <h3 class="font-display text-3xl sm:text-4xl font-bold text-slate-900 uppercase mb-1">Kekuatan <span class="text-gold-500">Kami</span></h3>
-        <p class="text-slate-500 max-w-lg mx-auto text-xs mb-12">Dibangun oleh talenta lokal dan dedikasi pekerja — satu kesatuan yang solid.</p>
+      <div class="relative z-10 max-w-3xl mx-auto w-full px-6 text-center">
+        <p class="text-blue-400 font-display text-sm tracking-[0.2em] uppercase mb-1">Komposisi Tim</p>
+        <h3 class="font-display text-3xl sm:text-4xl font-bold text-white uppercase mb-1 drop-shadow-md">Kekuatan <span class="text-gold-400">Kami</span></h3>
+        <p class="text-slate-300 max-w-lg mx-auto text-xs mb-12">Dibangun oleh talenta lokal dan dedikasi pekerja — satu kesatuan yang solid.</p>
 
         <div class="grid grid-cols-3 gap-4 sm:gap-6">
           <div class="flex flex-col items-center group">
@@ -326,12 +421,12 @@
           </div>
         </div>
 
-        <div class="mt-12 pt-8 border-t border-slate-100">
-          <p class="text-slate-500 text-xs leading-relaxed max-w-xl mx-auto italic">
+        <div class="mt-12 pt-8 border-t border-white/10">
+          <p class="text-slate-300 text-xs leading-relaxed max-w-xl mx-auto italic">
             Dibentuk sepenuhnya dari talenta dan tenaga kerja lokal Cirebon — 
-            <span class="text-blue-600 not-italic font-medium">≈70% pemuda setempat</span>, 
-            <span class="text-gold-500 not-italic font-medium">100% berbasis pekerja PLTU</span>, dengan 
-            <span class="text-gold-500 not-italic font-medium">30+ personil</span> 
+            <span class="text-blue-300 not-italic font-medium">≈70% pemuda setempat</span>, 
+            <span class="text-gold-400 not-italic font-medium">100% berbasis pekerja PLTU</span>, dengan 
+            <span class="text-gold-400 not-italic font-medium">85 personil aktif</span> 
             yang solid dan terus bertumbuh.
           </p>
         </div>
@@ -342,28 +437,45 @@
       </div>
     </section>
 
-    <section class="snap-section bg-slate-50" data-index="3">
-      <div class="max-w-4xl mx-auto w-full px-6">
-        <div class="text-center mb-8">
-          <p class="text-blue-600 font-display text-sm tracking-[0.2em] uppercase mb-2">Nilai Strategis</p>
-          <h3 class="font-display text-3xl sm:text-4xl font-bold text-slate-900 uppercase mb-2">Lebih Dari <span class="text-gold-500">Permainan</span></h3>
-          <p class="text-slate-500 max-w-lg mx-auto text-xs">Aset strategis bagi Social License to Operate dan pengembangan komunitas berkelanjutan.</p>
+    <section class="snap-section" data-index="3">
+      <div class="section-bg bg-nilai"></div>
+      <div class="section-overlay bg-blue-900/75"></div>
+      <div class="relative z-10 max-w-4xl mx-auto w-full px-6">
+        <div class="text-center mb-10">
+          <p class="text-blue-400 font-display text-sm tracking-[0.2em] uppercase mb-2">Nilai Strategis</p>
+          <h3 class="font-display text-3xl sm:text-4xl font-bold text-white uppercase mb-3 drop-shadow-md">Lebih Dari <span class="text-gold-400">Permainan</span></h3>
+          <p class="text-slate-300 max-w-2xl mx-auto text-sm leading-relaxed">Aset strategis bagi Social License to Operate dan pengembangan komunitas berkelanjutan.</p>
         </div>
-        <div class="grid sm:grid-cols-3 gap-5">
-          <div class="card-hover bg-white rounded-xl p-6 text-left shadow-md shadow-slate-200/50 border border-slate-100 border-t-[3px] border-t-blue-500">
-            <div class="inline-flex items-center justify-center w-11 h-11 rounded-lg bg-blue-50 mb-4"><i class="fas fa-handshake text-lg text-blue-600"></i></div>
-            <h4 class="font-display text-base font-bold text-slate-900 uppercase mb-2 tracking-wide">Social License</h4>
-            <p class="text-slate-500 text-xs leading-relaxed">Membangun kepercayaan publik dan memperkuat hubungan perusahaan dengan komunitas sekitar melalui wadah olahraga yang inklusif.</p>
+        <div class="grid sm:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto">
+          <div class="group relative bg-gradient-to-br from-blue-500/10 to-blue-600/5 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-blue-400/20 hover:border-blue-400/40 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/20 hover:-translate-y-1">
+            <div class="absolute top-0 right-0 w-16 h-16 sm:w-20 sm:h-20 bg-blue-400/5 rounded-bl-full"></div>
+            <div class="relative">
+              <div class="inline-flex items-center justify-center w-11 h-11 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 mb-3 sm:mb-4 ring-2 ring-blue-400/30 group-hover:ring-blue-400/50 transition-all group-hover:scale-110">
+                <i class="fas fa-handshake text-lg sm:text-2xl text-blue-400"></i>
+              </div>
+              <h4 class="font-display text-base sm:text-lg font-bold text-white uppercase mb-1.5 sm:mb-2 tracking-wide">Social License</h4>
+              <p class="text-slate-300 text-[0.7rem] sm:text-xs leading-relaxed">Membangun kepercayaan publik dan memperkuat hubungan perusahaan dengan komunitas sekitar melalui wadah olahraga yang inklusif.</p>
+            </div>
           </div>
-          <div class="card-hover bg-white rounded-xl p-6 text-left shadow-md shadow-slate-200/50 border border-slate-100 border-t-[3px] border-t-gold-500">
-            <div class="inline-flex items-center justify-center w-11 h-11 rounded-lg bg-amber-50 mb-4"><i class="fas fa-people-group text-lg text-gold-500"></i></div>
-            <h4 class="font-display text-base font-bold text-slate-900 uppercase mb-2 tracking-wide">Community Dev</h4>
-            <p class="text-slate-500 text-xs leading-relaxed">70% anggota adalah pemuda lokal — kontribusi nyata terhadap pengembangan masyarakat dan pengurangan pengangguran terselubung.</p>
+          <div class="group relative bg-gradient-to-br from-gold-500/10 to-gold-600/5 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-gold-400/20 hover:border-gold-400/40 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/20 hover:-translate-y-1">
+            <div class="absolute top-0 right-0 w-16 h-16 sm:w-20 sm:h-20 bg-gold-400/5 rounded-bl-full"></div>
+            <div class="relative">
+              <div class="inline-flex items-center justify-center w-11 h-11 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl bg-gradient-to-br from-gold-500/20 to-gold-600/10 mb-3 sm:mb-4 ring-2 ring-gold-400/30 group-hover:ring-gold-400/50 transition-all group-hover:scale-110">
+                <i class="fas fa-people-group text-lg sm:text-2xl text-gold-400"></i>
+              </div>
+              <h4 class="font-display text-base sm:text-lg font-bold text-white uppercase mb-1.5 sm:mb-2 tracking-wide">Community Dev</h4>
+              <p class="text-slate-300 text-[0.7rem] sm:text-xs leading-relaxed">70% anggota adalah pemuda lokal — kontribusi nyata terhadap pengembangan masyarakat dan pengurangan pengangguran terselubung.</p>
+            </div>
           </div>
-          <div class="card-hover bg-white rounded-xl p-6 text-left shadow-md shadow-slate-200/50 border border-slate-100 border-t-[3px] border-t-emerald-500">
-            <div class="inline-flex items-center justify-center w-11 h-11 rounded-lg bg-emerald-50 mb-4"><i class="fas fa-heart-pulse text-lg text-emerald-500"></i></div>
-            <h4 class="font-display text-base font-bold text-slate-900 uppercase mb-2 tracking-wide">Well-being</h4>
-            <p class="text-slate-500 text-xs leading-relaxed">Olahraga rutin meningkatkan kesehatan fisik dan mental pekerja, berdampak langsung pada produktivitas dan semangat kerja.</p>
+          <div class="group relative bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-emerald-400/20 hover:border-emerald-400/40 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/20 hover:-translate-y-1">
+            <div class="absolute top-0 right-0 w-16 h-16 sm:w-20 sm:h-20 bg-emerald-400/5 rounded-bl-full"></div>
+            <div class="relative">
+              <div class="inline-flex items-center justify-center w-11 h-11 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 mb-3 sm:mb-4 ring-2 ring-emerald-400/30 group-hover:ring-emerald-400/50 transition-all group-hover:scale-110">
+                <i class="fas fa-heart-pulse text-lg sm:text-2xl text-emerald-400"></i>
+              </div>
+              <h4 class="font-display text-base sm:text-lg font-bold text-white uppercase mb-1.5 sm:mb-2 tracking-wide">Well-being</h4>
+              <p class="text-slate-300 text-[0.7rem] sm:text-xs leading-relaxed">Olahraga rutin meningkatkan kesehatan fisik dan mental pekerja, berdampak langsung pada produktivitas dan semangat kerja.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -373,74 +485,86 @@
       </div>
     </section>
 
-    <section class="snap-section bg-white" data-index="4" data-hpages="2">
+    <section class="snap-section" data-index="4" data-hpages="2">
       <div class="h-pages" id="timeline-pages">
-        <div class="h-page">
-          <div class="max-w-3xl w-full">
+        <div class="h-page relative">
+          <div class="section-bg bg-timeline-p1"></div>
+          <div class="section-overlay bg-slate-900/80"></div>
+          <div class="relative z-10 max-w-3xl w-full">
             <div class="text-center mb-8">
-              <p class="text-blue-600 font-display text-sm tracking-[0.2em] uppercase mb-2">Jejak Langkah</p>
-              <h3 class="font-display text-4xl sm:text-5xl font-bold text-slate-900 uppercase">Kronologi <span class="text-gold-500">Prestasi</span></h3>
+              <p class="text-blue-400 font-display text-sm tracking-[0.2em] uppercase mb-2">Jejak Langkah</p>
+              <h3 class="font-display text-4xl sm:text-5xl font-bold text-white uppercase drop-shadow-md">Kronologi <span class="text-gold-400">Prestasi</span></h3>
             </div>
-            <div class="space-y-6">
+            <div class="space-y-5">
               <div class="flex gap-4">
-                <div class="shrink-0 w-10 h-10 rounded-full bg-blue-50 border-2 border-blue-400 flex items-center justify-center"><i class="fas fa-flag text-sm text-blue-600"></i></div>
+                <div class="shrink-0 w-10 h-10 rounded-full bg-blue-900/40 border-2 border-blue-400 flex items-center justify-center"><i class="fas fa-flag text-sm text-blue-300"></i></div>
                 <div>
-                  <span class="text-blue-600 text-xs font-semibold tracking-wider uppercase">Awal 2024</span>
-                  <h4 class="font-display text-lg font-bold text-slate-900 uppercase mt-0.5">Pembentukan Tim</h4>
-                  <p class="text-slate-500 text-sm">Berawal dari inisiatif pekerja kontrak yang bermain sepak bola selepas jam kerja di area PLTU. Dari hobi bersama, terbentuk solidaritas lintas divisi.</p>
+                  <span class="text-blue-400 text-xs font-semibold tracking-wider uppercase">01 Januari 2022</span>
+                  <h4 class="font-display text-lg font-bold text-white uppercase mt-0.5">Pembentukan Tim JOKER FC</h4>
+                  <p class="text-slate-300 text-sm">Berawal dari inisiatif pekerja operasional PLTU Cirebon yang bermain sepak bola selepas jam kerja. Dari hobi bersama, terbentuk solidaritas lintas divisi dengan 85 anggota aktif.</p>
                 </div>
               </div>
               <div class="flex gap-4">
-                <div class="shrink-0 w-10 h-10 rounded-full bg-blue-50 border-2 border-blue-400 flex items-center justify-center"><i class="fas fa-user-plus text-sm text-blue-600"></i></div>
+                <div class="shrink-0 w-10 h-10 rounded-full bg-amber-900/40 border-2 border-gold-400 flex items-center justify-center"><i class="fas fa-trophy text-sm text-gold-400"></i></div>
                 <div>
-                  <span class="text-blue-600 text-xs font-semibold tracking-wider uppercase">Pertengahan 2024</span>
-                  <h4 class="font-display text-lg font-bold text-slate-900 uppercase mt-0.5">Rekrutmen Talenta Lokal</h4>
-                  <p class="text-slate-500 text-sm">Merekrut pemain berbakat dari wilayah Cirebon. Komposisi tim mencapai 70% pemuda lokal yang juga bekerja di pembangkit.</p>
+                  <span class="text-gold-400 text-xs font-semibold tracking-wider uppercase">November 2022</span>
+                  <h4 class="font-display text-lg font-bold text-white uppercase mt-0.5">Juara II Kuwu Cup Kanci Wetan</h4>
+                  <p class="text-slate-300 text-sm">Prestasi pertama sebagai runner-up dalam turnamen Kuwu Cup di Kanci Wetan — bukti awal kualitas tim.</p>
                 </div>
               </div>
               <div class="flex gap-4">
-                <div class="shrink-0 w-10 h-10 rounded-full bg-amber-50 border-2 border-gold-400 flex items-center justify-center"><i class="fas fa-trophy text-sm text-gold-500"></i></div>
+                <div class="shrink-0 w-10 h-10 rounded-full bg-amber-900/40 border-2 border-gold-400 flex items-center justify-center"><i class="fas fa-star text-sm text-gold-400"></i></div>
                 <div>
-                  <span class="text-gold-500 text-xs font-semibold tracking-wider uppercase">Akhir 2024</span>
-                  <h4 class="font-display text-lg font-bold text-slate-900 uppercase mt-0.5">Runner-Up Turnamen Lokal</h4>
-                  <p class="text-slate-500 text-sm">Mencapai posisi Runner-Up dalam turnamen sepak bola antar-komunitas di Kabupaten Cirebon.</p>
+                  <span class="text-gold-400 text-xs font-semibold tracking-wider uppercase">September 2024</span>
+<h4 class="font-display text-lg font-bold text-white uppercase mt-0.5">Juara I Futsal Antar Instansi</h4>
+<p class="text-slate-300 text-sm">Pemain JOKER berkontribusi dalam tim <strong class="text-blue-300">Cirebon Power</strong> dan meraih juara pertama turnamen futsal antar instansi pemerintah — <strong class="text-gold-400">pemain terbaik</strong> diraih oleh pemain JOKER.</p>
                 </div>
               </div>
             </div>
             <div class="text-right mt-8">
-              <a href="#" data-hdir="next" class="text-slate-400 hover:text-blue-600 text-xs transition-colors">Selanjutnya &rarr;</a>
+              <a href="#" data-hdir="next" class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-400 hover:bg-gold-500/20 hover:border-gold-500/50 text-sm font-semibold tracking-wider uppercase transition-all">Halaman 2 <i class="fas fa-arrow-right text-xs"></i></a>
             </div>
           </div>
         </div>
-        <div class="h-page">
-          <div class="max-w-3xl w-full">
+        <div class="h-page relative">
+          <div class="section-bg bg-timeline-p2"></div>
+          <div class="section-overlay bg-slate-900/80"></div>
+          <div class="relative z-10 max-w-3xl w-full">
             <div class="text-center mb-4">
-              <p class="text-blue-600 font-display text-sm tracking-[0.2em] uppercase mb-2">Jejak Langkah</p>
-              <h3 class="font-display text-4xl sm:text-5xl font-bold text-slate-900 uppercase">Kronologi <span class="text-gold-500">Prestasi</span></h3>
+              <p class="text-blue-400 font-display text-sm tracking-[0.2em] uppercase mb-2">Jejak Langkah</p>
+              <h3 class="font-display text-4xl sm:text-5xl font-bold text-white uppercase drop-shadow-md">Kronologi <span class="text-gold-400">Prestasi</span></h3>
             </div>
-            <div class="space-y-6">
+            <div class="space-y-5">
               <div class="flex gap-4">
-                <div class="shrink-0 w-10 h-10 rounded-full bg-blue-50 border-2 border-blue-400 flex items-center justify-center"><i class="fas fa-handshake text-sm text-blue-600"></i></div>
+                <div class="shrink-0 w-10 h-10 rounded-full bg-amber-900/40 border-2 border-gold-400 flex items-center justify-center"><i class="fas fa-star text-sm text-gold-400"></i></div>
                 <div>
-                  <span class="text-blue-600 text-xs font-semibold tracking-wider uppercase">Awal 2025</span>
-                  <h4 class="font-display text-lg font-bold text-slate-900 uppercase mt-0.5">Eksibisi dengan Instansi</h4>
-                  <p class="text-slate-500 text-sm">Menggelar pertandingan eksibisi melawan tim dari instansi pemerintah daerah, membuka jejaring dan membangun reputasi.</p>
+                  <span class="text-gold-400 text-xs font-semibold tracking-wider uppercase">September 2025</span>
+<h4 class="font-display text-lg font-bold text-white uppercase mt-0.5">Juara I Futsal Antar Instansi (Kembali)</h4>
+<p class="text-slate-300 text-sm">Pemain JOKER kembali berkontribusi dalam tim <strong class="text-blue-300">Cirebon Power</strong> mempertahankan gelar juara tahun kedua berturut-turut — <strong class="text-gold-400">pemain terbaik</strong> kembali diraih oleh pemain JOKER.</p>
                 </div>
               </div>
               <div class="flex gap-4">
-                <div class="shrink-0 w-10 h-10 rounded-full bg-amber-50 border-2 border-gold-400 flex items-center justify-center"><i class="fas fa-people-group text-sm text-gold-500"></i></div>
+                <div class="shrink-0 w-10 h-10 rounded-full bg-amber-900/40 border-2 border-gold-400 flex items-center justify-center"><i class="fas fa-trophy text-sm text-gold-400"></i></div>
                 <div>
-                  <span class="text-gold-500 text-xs font-semibold tracking-wider uppercase">Berlanjut</span>
-                  <h4 class="font-display text-lg font-bold text-slate-900 uppercase mt-0.5">Keterlibatan Komunitas</h4>
-                  <p class="text-slate-500 text-sm">Aktif berpartisipasi dalam kegiatan sosial dan kemasyarakatan di Kabupaten Cirebon, memperkuat peran sebagai agen perubahan positif.</p>
+                  <span class="text-gold-400 text-xs font-semibold tracking-wider uppercase">Oktober 2025</span>
+                  <h4 class="font-display text-lg font-bold text-white uppercase mt-0.5">Juara III Mandala Giri Cup & Nadran Cup</h4>
+                  <p class="text-slate-300 text-sm">Meraih posisi ketiga di dua turnamen open: Mandala Giri Cup dan Nadran Cup Ender — konsistensi prestasi.</p>
                 </div>
               </div>
+              <div class="flex gap-4">
+                <div class="shrink-0 w-10 h-10 rounded-full bg-amber-900/40 border-2 border-gold-400 flex items-center justify-center"><i class="fas fa-medal text-sm text-gold-400"></i></div>
+                <div>
+                  <span class="text-gold-400 text-xs font-semibold tracking-wider uppercase">Desember 2025</span>
+                  <h4 class="font-display text-lg font-bold text-white uppercase mt-0.5">Juara II Kuwu Cup 3 Danawinangun</h4>
+                  <p class="text-slate-300 text-sm">Runner-up di turnamen open Kuwu Cup 3 Danawinangun — penutup tahun 2025 dengan prestasi gemilang.</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 text-center">
+              <p class="text-slate-300 text-xs italic leading-relaxed">Dari <strong class="text-gold-400 not-italic">6 gelar juara</strong> dalam <strong class="text-blue-300 not-italic">20+ turnamen</strong> sejak 2022 — perjalanan Tim JOKER adalah bukti nyata bahwa dedikasi pekerja dan talenta lokal mampu bersaing dan berprestasi.</p>
             </div>
             <div class="text-left mt-8">
-              <a href="#" data-hdir="prev" class="text-slate-400 hover:text-blue-600 text-xs transition-colors">&larr; Sebelumnya</a>
-            </div>
-            <div class="mt-4 text-center">
-              <p class="text-slate-400 text-xs italic">Perjalanan Tim JOKER terus berlanjut — setiap langkah adalah bukti komitmen terhadap komunitas, solidaritas, dan prestasi.</p>
+              <a href="#" data-hdir="prev" class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-400 hover:bg-gold-500/20 hover:border-gold-500/50 text-sm font-semibold tracking-wider uppercase transition-all"><i class="fas fa-arrow-left text-xs"></i> Halaman 1</a>
             </div>
           </div>
         </div>
@@ -451,11 +575,13 @@
       </div>
     </section>
 
-    <section class="snap-section bg-slate-50" data-index="5">
-      <div class="max-w-4xl mx-auto w-full px-6 text-center">
-        <p class="text-blue-600 font-display text-sm tracking-[0.2em] uppercase mb-2">Di Balik Tim</p>
-        <h3 class="font-display text-4xl sm:text-5xl font-bold text-slate-900 uppercase mb-3">Man Behind <span class="text-gold-500">The Team</span></h3>
-        <p class="text-slate-500 max-w-xl mx-auto text-sm mb-12">Para pengurus dan pembina yang memastikan Tim JOKER tetap solid, sehat, dan kompetitif.</p>
+    <section class="snap-section" data-index="5">
+      <div class="section-bg bg-man-behind"></div>
+      <div class="section-overlay bg-blue-900/75"></div>
+      <div class="relative z-10 max-w-4xl mx-auto w-full px-6 text-center">
+        <p class="text-blue-400 font-display text-sm tracking-[0.2em] uppercase mb-2">Di Balik Tim</p>
+        <h3 class="font-display text-4xl sm:text-5xl font-bold text-white uppercase mb-3 drop-shadow-md">Man Behind <span class="text-gold-400">The Team</span></h3>
+        <p class="text-slate-300 max-w-xl mx-auto text-sm mb-12">Para pengurus dan pembina yang memastikan Tim JOKER tetap solid, sehat, dan kompetitif.</p>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
           <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100 flex flex-col items-center card-hover">
@@ -490,18 +616,53 @@
       </div>
     </section>
 
-    <section class="snap-section bg-slate-900 text-white" data-index="6">
-      <div class="text-center px-6">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-sm border border-white/10 bg-slate-800 mb-6">
-          <i class="fas fa-shield-haltered text-2xl text-gold-400"></i>
+    <section class="snap-section text-white" data-index="6">
+      <div class="section-bg bg-credits"></div>
+      <div class="section-overlay bg-slate-900/85"></div>
+      <div class="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 py-12">
+        <div class="max-w-3xl mx-auto text-center space-y-8">
+          <!-- Logo -->
+          <div class="inline-flex items-center justify-center w-20 h-20 rounded-xl border-2 border-gold-400/30 bg-slate-800/60 backdrop-blur-md mb-4 shadow-xl shadow-gold-500/10">
+            <i class="fas fa-shield-haltered text-3xl text-gold-400"></i>
+          </div>
+          
+          <!-- Title -->
+          <div>
+            <h4 class="font-display text-4xl sm:text-5xl font-black uppercase tracking-wider mb-3 drop-shadow-lg text-white">JOKER FC</h4>
+            <p class="text-gold-400 text-sm font-semibold tracking-widest uppercase">Kebersamaan • Kegembiraan • Optimisme • Ambisi • Prestasi</p>
+          </div>
+
+          <!-- Closing Statement -->
+          <div class="border-t border-b border-white/10 py-8 my-8">
+            <p class="text-slate-200 text-base sm:text-lg leading-relaxed italic mb-4">
+              "Dari lapangan rumput PLTU Cirebon, kami tidak hanya bermain sepak bola — kami membangun <span class="text-gold-400 font-semibold not-italic">solidaritas</span>, menumbuhkan <span class="text-blue-400 font-semibold not-italic">talenta lokal</span>, dan membuktikan bahwa <span class="text-white font-semibold not-italic">dedikasi pekerja</span> mampu berprestasi."
+            </p>
+            <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+              Dengan <strong class="text-gold-400">6 gelar juara</strong> dalam <strong class="text-blue-400">20+ turnamen</strong> sejak 2022, kami hadir bukan untuk meminta — tetapi untuk <strong class="text-white">bermitra</strong>.
+            </p>
+            <div class="mt-6 pt-6 border-t border-white/5">
+              <p class="text-white text-base sm:text-lg font-semibold mb-2">
+                Dukungan Cirebon Power adalah <span class="text-gold-400">investasi</span> pada masa depan komunitas,
+              </p>
+              <p class="text-slate-200 text-sm sm:text-base">
+                dan kami siap menjadi <span class="text-blue-400 font-semibold">wajah kebanggaan</span> perusahaan di lapangan hijau.
+              </p>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="space-y-4 pt-4">
+            <div class="flex justify-center gap-4 sm:gap-6 text-slate-400 text-xs sm:text-sm flex-wrap">
+              <span>PLTU Cirebon</span>
+              <span class="text-slate-600">•</span>
+              <span>Kabupaten Cirebon</span>
+              <span class="text-slate-600">•</span>
+              <span>Jawa Barat</span>
+            </div>
+            <p class="text-slate-500 text-xs">Proposal Interaktif &copy; 2025 — Tim JOKER FC</p>
+            <p class="text-slate-600 text-[0.6rem] tracking-wider">Created &amp; Designed by <span class="text-slate-500">Setyawan90</span></p>
+          </div>
         </div>
-        <h4 class="font-display text-2xl font-bold uppercase tracking-wider mb-3">JOKER FC</h4>
-        <p class="text-slate-400 text-sm mb-8">Kebersamaan. Kegembiraan. Optimisme. Ambisi. Prestasi.</p>
-        <div class="flex justify-center gap-6 text-slate-400 text-sm">
-          <span>PLTU Cirebon</span><span class="text-slate-700">|</span><span>Kabupaten Cirebon</span><span class="text-slate-700">|</span><span>Jawa Barat</span>
-        </div>
-        <p class="text-slate-600 text-xs mt-8">Proposal Interaktif &copy; 2025 — Tim JOKER FC</p>
-        <p class="text-slate-500/50 text-[0.6rem] mt-3 tracking-wider">Created &amp; Designed by <span class="text-slate-400">Setyawan90</span></p>
       </div>
       <div class="section-arrows">
         <button data-dir="up" aria-label="Sebelumnya"><i class="fas fa-chevron-up text-sm"></i></button>
