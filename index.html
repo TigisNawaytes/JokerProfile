@@ -144,6 +144,156 @@
       border-color: rgba(37,99,235,0.25);
     }
 
+    /* ======== LUXURY PROFILE CARDS ======== */
+    .profile-card {
+      position: relative;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .profile-card:hover {
+      transform: translateY(-8px);
+    }
+    .profile-card-inner {
+      position: relative;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.75) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(251, 191, 36, 0.15);
+      border-radius: 1rem;
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+      box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .profile-card-inner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.5), transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .profile-card:hover .profile-card-inner {
+      border-color: rgba(251, 191, 36, 0.4);
+      box-shadow: 0 16px 48px -12px rgba(0, 0, 0, 0.6), 
+                  0 0 0 1px rgba(251, 191, 36, 0.2),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .profile-card:hover .profile-card-inner::before {
+      opacity: 1;
+    }
+
+    .profile-photo-wrapper {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    .profile-photo {
+      width: 5.5rem;
+      height: 5.5rem;
+      border-radius: 50%;
+      object-fit: cover;
+      position: relative;
+      z-index: 2;
+      border: 3px solid rgba(251, 191, 36, 0.3);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .profile-card:hover .profile-photo {
+      border-color: rgba(251, 191, 36, 0.6);
+      box-shadow: 0 12px 32px -8px rgba(251, 191, 36, 0.3), 0 0 0 4px rgba(251, 191, 36, 0.1);
+      transform: scale(1.05);
+    }
+    .profile-photo-ring {
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(59, 130, 246, 0.2)) border-box;
+      -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .profile-card:hover .profile-photo-ring {
+      opacity: 1;
+    }
+
+    .profile-content {
+      text-align: center;
+      width: 100%;
+    }
+    .profile-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.25rem;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    .profile-title {
+      font-size: 0.7rem;
+      color: #cbd5e1;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      line-height: 1.2;
+    }
+    .profile-subtitle {
+      font-size: 0.65rem;
+      color: #94a3b8;
+      margin-bottom: 0.75rem;
+      min-height: 0.8rem;
+    }
+    .profile-role {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--role-color, #3b82f6);
+      padding: 0.375rem 0.875rem;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+      border: 1px solid;
+      border-color: color-mix(in srgb, var(--role-color, #3b82f6) 30%, transparent);
+      border-radius: 9999px;
+      box-shadow: 0 0 16px -4px color-mix(in srgb, var(--role-color, #3b82f6) 20%, transparent);
+      transition: all 0.3s ease;
+    }
+    .profile-card:hover .profile-role {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+      border-color: color-mix(in srgb, var(--role-color, #3b82f6) 50%, transparent);
+      box-shadow: 0 0 24px -2px color-mix(in srgb, var(--role-color, #3b82f6) 40%, transparent);
+    }
+
+    @media (max-width: 640px) {
+      .profile-card-inner {
+        padding: 1.25rem 0.75rem;
+      }
+      .profile-photo {
+        width: 4.5rem;
+        height: 4.5rem;
+      }
+      .profile-name {
+        font-size: 1rem;
+      }
+      .profile-title {
+        font-size: 0.65rem;
+      }
+      .profile-role {
+        font-size: 0.6rem;
+        padding: 0.3rem 0.75rem;
+      }
+    }
+
     .katex { font-size: 1.1em !important; }
     .katex-display { margin: 0.4em 0 !important; }
     .stat-katex .katex { font-size: 2em !important; }
@@ -542,36 +692,80 @@
 
     <section class="snap-section" data-index="5">
       <div class="section-bg bg-man-behind"></div>
-      <div class="section-overlay bg-blue-900/75"></div>
-      <div class="relative z-10 max-w-4xl mx-auto w-full px-6 text-center">
-        <p class="text-blue-400 font-display text-sm tracking-[0.2em] uppercase mb-2">Di Balik Tim</p>
-        <h3 class="font-display text-4xl sm:text-5xl font-bold text-white uppercase mb-3 drop-shadow-md">Man Behind <span class="text-gold-400">The Team</span></h3>
-        <p class="text-slate-300 max-w-xl mx-auto text-sm mb-12">Para pengurus dan pembina yang memastikan Tim JOKER tetap solid, sehat, dan kompetitif.</p>
+      <div class="section-overlay bg-slate-900/90"></div>
+      <div class="relative z-10 max-w-5xl mx-auto w-full px-4 sm:px-6 py-12 sm:py-16">
+        <!-- Header -->
+        <div class="text-center mb-10 sm:mb-14">
+          <p class="text-gold-400 font-display text-xs sm:text-sm tracking-[0.25em] uppercase mb-2 sm:mb-3">Di Balik Tim</p>
+          <h3 class="font-display text-3xl sm:text-5xl font-bold text-white uppercase mb-3 sm:mb-4 drop-shadow-lg">Man Behind <span class="text-gold-400">The Team</span></h3>
+          <div class="w-16 sm:w-20 h-0.5 bg-gradient-to-r from-transparent via-gold-400 to-transparent mx-auto mb-3 sm:mb-4"></div>
+          <p class="text-slate-300 max-w-2xl mx-auto text-xs sm:text-sm leading-relaxed">Para pengurus dan pembina yang memastikan Tim JOKER tetap solid, sehat, dan kompetitif.</p>
+        </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
-          <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100 flex flex-col items-center card-hover">
-            <img src="assets/images/profiles/profile-jumadi.webp" alt="Jumadi" class="w-24 h-24 rounded-full object-cover ring-4 ring-blue-100 shadow-md mb-4">
-            <p class="font-semibold text-slate-800 text-sm">Jumadi</p>
-            <p class="text-slate-400 text-[0.6rem] mt-0.5">GA Superintendent (CPS)</p>
-            <p class="text-blue-600 text-[0.65rem] font-semibold tracking-wider uppercase mt-1.5">Pembina</p>
+        <!-- Profile Cards Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <!-- Jumadi Card -->
+          <div class="profile-card group">
+            <div class="profile-card-inner">
+              <div class="profile-photo-wrapper">
+                <img src="assets/images/profiles/profile-jumadi.webp" alt="Jumadi" class="profile-photo">
+                <div class="profile-photo-ring"></div>
+              </div>
+              <div class="profile-content">
+                <h4 class="profile-name">Jumadi</h4>
+                <p class="profile-title">GA Superintendent</p>
+                <p class="profile-subtitle">(CPS)</p>
+                <div class="profile-role" style="--role-color: #3b82f6;">Pembina</div>
+              </div>
+            </div>
           </div>
-          <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100 flex flex-col items-center card-hover">
-            <img src="assets/images/profiles/profile-juli.webp" alt="Juli S" class="w-24 h-24 rounded-full object-cover ring-4 ring-amber-100 shadow-md mb-4">
-            <p class="font-semibold text-slate-800 text-sm">Juli S</p>
-            <p class="text-slate-400 text-[0.6rem] mt-0.5">OCS SPV</p>
-            <p class="text-gold-600 text-[0.65rem] font-semibold tracking-wider uppercase mt-1.5">Manajer</p>
+
+          <!-- Juli S Card -->
+          <div class="profile-card group">
+            <div class="profile-card-inner">
+              <div class="profile-photo-wrapper">
+                <img src="assets/images/profiles/profile-juli.webp" alt="Juli S" class="profile-photo">
+                <div class="profile-photo-ring"></div>
+              </div>
+              <div class="profile-content">
+                <h4 class="profile-name">Juli S</h4>
+                <p class="profile-title">OCS SPV</p>
+                <p class="profile-subtitle">&nbsp;</p>
+                <div class="profile-role" style="--role-color: #f59e0b;">Manajer</div>
+              </div>
+            </div>
           </div>
-          <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100 flex flex-col items-center card-hover">
-            <img src="assets/images/profiles/profile-komar.webp" alt="Komar" class="w-24 h-24 rounded-full object-cover ring-4 ring-emerald-100 shadow-md mb-4">
-            <p class="font-semibold text-slate-800 text-sm">Komar</p>
-            <p class="text-slate-400 text-[0.6rem] mt-0.5">OCS Team Lead</p>
-            <p class="text-emerald-600 text-[0.65rem] font-semibold tracking-wider uppercase mt-1.5">Kesehatan</p>
+
+          <!-- Komar Card -->
+          <div class="profile-card group">
+            <div class="profile-card-inner">
+              <div class="profile-photo-wrapper">
+                <img src="assets/images/profiles/profile-komar.webp" alt="Komar" class="profile-photo">
+                <div class="profile-photo-ring"></div>
+              </div>
+              <div class="profile-content">
+                <h4 class="profile-name">Komar</h4>
+                <p class="profile-title">OCS Team Lead</p>
+                <p class="profile-subtitle">&nbsp;</p>
+                <div class="profile-role" style="--role-color: #10b981;">Kesehatan</div>
+              </div>
+            </div>
           </div>
-          <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100 flex flex-col items-center card-hover">
-            <img src="assets/images/profiles/profile-rudy.webp" alt="Rudy S" class="w-24 h-24 rounded-full object-cover ring-4 ring-slate-200 shadow-md mb-4">
-            <p class="font-semibold text-slate-800 text-sm">Rudy S</p>
-            <p class="text-slate-400 text-[0.6rem] mt-0.5">OCS Team Lead</p>
-            <p class="text-slate-500 text-[0.65rem] font-semibold tracking-wider uppercase mt-1.5">Admin</p>
+
+          <!-- Rudy S Card -->
+          <div class="profile-card group">
+            <div class="profile-card-inner">
+              <div class="profile-photo-wrapper">
+                <img src="assets/images/profiles/profile-rudy.webp" alt="Rudy S" class="profile-photo">
+                <div class="profile-photo-ring"></div>
+              </div>
+              <div class="profile-content">
+                <h4 class="profile-name">Rudy S</h4>
+                <p class="profile-title">OCS Team Lead</p>
+                <p class="profile-subtitle">&nbsp;</p>
+                <div class="profile-role" style="--role-color: #64748b;">Admin</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
