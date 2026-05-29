@@ -1,15 +1,15 @@
-# Image assets (large files)
+# Image assets — exclude only RAW original files (too large)
 assets/images/original/*
-assets/images/desktop/*
-assets/images/mobile/*
 
-# Keep folder structure
+# Keep folder structure & optimized images
 !assets/images/original/.gitkeep
-!assets/images/desktop/.gitkeep
-!assets/images/mobile/.gitkeep
 
-# Logo should be tracked (small file)
-!assets/images/logo/*.png
+# Desktop & mobile optimized images ARE tracked (small WebP files)
+# assets/images/desktop/ — TRACKED
+# assets/images/mobile/ — TRACKED
+
+# Logo tracked
+# assets/images/logo/ — TRACKED
 
 # Node modules (if any)
 node_modules/
